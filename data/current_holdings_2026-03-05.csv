@@ -1,0 +1,12 @@
+owner,account_name,account_type,as_of_et,symbol,asset_type,quantity,price_usd,current_value_usd,notes
+AVI,Avinash Nayak - Brokerage Account - 32468952,Taxable,2026-03-05 16:15 ET,CASH,settlement_fund,,,364042.52,"Vanguard Federal Money Market Fund settlement fund"
+AVI,Avinash Nayak - Brokerage Account - 32468952,Taxable,2026-03-05 16:15 ET,BABA,stock,652.702,130.35,85079.71,
+AVI,Avinash Nayak - Brokerage Account - 32468952,Taxable,2026-03-05 16:15 ET,BRK.B,stock,108.000,500.40,54043.20,"Screenshot showed BRK B; normalized here as BRK.B"
+AVI,Avinash Nayak - Brokerage Account - 32468952,Taxable,2026-03-05 16:15 ET,CHGG,stock,1000.000,0.63,631.80,
+AVI,Avinash Nayak - Brokerage Account - 32468952,Taxable,2026-03-05 16:15 ET,DIDIY,stock,2500.000,4.10,10250.00,
+AVI,Avinash Nayak - Brokerage Account - 32468952,Taxable,2026-03-05 16:15 ET,OXY,stock,492.000,53.24,26194.08,
+AVI,Avinash Nayak - Brokerage Account - 32468952,Taxable,2026-03-05 16:15 ET,SOC,stock,10470.000,13.85,145009.50,
+AVI,Avinash Nayak - Roth IRA Brokerage Account - 65856236,Roth IRA,2026-03-05 16:15 ET,CASH,settlement_fund,,,0.03,"Vanguard Federal Money Market Fund settlement fund"
+AVI,Avinash Nayak - Roth IRA Brokerage Account - 65856236,Roth IRA,2026-03-05 16:15 ET,BND,etf,46.801,74.34,3479.19,
+AVI,Avinash Nayak - Roth IRA Brokerage Account - 65856236,Roth IRA,2026-03-05 16:15 ET,VUG,etf,32.923,464.31,15286.52,
+AVI,Avinash Nayak - Roth IRA Brokerage Account - 65856236,Roth IRA,2026-03-05 16:15 ET,PLTR,stock,104.000,152.67,15877.68,"Current open PLTR position exists as of March 5, 2026"

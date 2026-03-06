@@ -1,0 +1,12 @@
+﻿{
+  "name": "bbmb-index",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "extract:pabrai": "node scripts/extract-pabrai-pdf-data.mjs",
+    "build": "node scripts/build-dashboard-data.mjs",
+    "serve": "node server.mjs",
+    "dev": "node scripts/build-dashboard-data.mjs && node server.mjs"
+  }
+}
+

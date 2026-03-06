@@ -1,0 +1,14 @@
+﻿member,ticker,action,date,date_status,quantity,quantity_status,price,currency,cash_amount_usd,position_status,source,notes
+AVI,BIMAS.IS,BUY,2018-06-15,estimated,8913.5874,estimated,25.98,TRY,50000,open,user_memory,"Modeled from user memory: $50k USD converted to TRY at an estimated June 2018 FX rate. Not present in the March 5, 2026 Vanguard snapshot."
+AVI,BABA,BUY,2020-03-15,estimated,652.7020,confirmed,190.00,USD,124013.38,open,user_memory,"Price memory fits March 2020 better than March 2021. The model now treats the March 5, 2026 Vanguard quantity as the canonical lot size."
+AVI,SOC,BUY,2025-11-15,estimated,10470.0000,confirmed,4.20,USD,43974.00,open,user_memory,"November 2025 is the best price match to a roughly $4.20 entry. The model now treats the March 5, 2026 Vanguard quantity as the canonical lot size."
+AVI,OXY,BUY,2025-05-15,estimated,500.0000,estimated,40.00,USD,20000,open,user_memory,"May 2025 is the closest monthly fit to a $40 entry."
+AVI,CHGG,BUY,2025-05-15,estimated,1000.0000,estimated,1.00,USD,1000,open,user_memory,"Current Vanguard quantity matches the implied 1,000-share estimate."
+AVI,DIDIY,BUY,2021-09-28,estimated,2500.0000,estimated,8.00,USD,20000,open,user_memory,"User added DIDIY at about $8 for $20k. March 2021 would be before the company was public, so the date is estimated to the nearest $8 close on September 28, 2021. Current Vanguard quantity matches the implied estimate exactly."
+AVI,BRK.B,BUY,2021-03-15,estimated,108.0000,confirmed,255.47,USD,27590.76,open,user_memory,"Date inferred from 'about 5 years ago' relative to March 6, 2026. The model now treats the March 5, 2026 Vanguard quantity as the canonical lot size."
+AVI,MU,BUY,2020-11-15,estimated,1800.1200,estimated,60.00,USD,108007.20,sold,user_memory,"Micron assumed as MU. User remembered roughly a $60 entry around five years earlier."
+AVI,MU,SELL,2025-11-06,confirmed,1800.1200,confirmed,240.0182,USD,432061.65,sold,morgan_stanley_statement,"Q4 2025 Morgan Stanley statement shows a full 1,800.12-share exit on November 6, 2025."
+AVI,PLTR,BUY,2020-09-30,estimated,4210.5263,estimated,9.50,USD,40000,partial_exit,user_memory,"Entry modeled near the September 30, 2020 IPO close using the user's $40k position size."
+AVI,PLTR,SELL,2025-01-07,estimated,4210.5263,estimated,70.00,USD,294736.84,partial_exit,user_memory,"Sale date estimated to the nearest historical close to $70. Treated as separate from the current 104-share Roth PLTR holding in the March 5, 2026 Vanguard snapshot."
+
+
