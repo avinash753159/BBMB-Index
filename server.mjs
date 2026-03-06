@@ -4,7 +4,7 @@ import path from 'node:path';
 
 const root = process.cwd();
 const distDir = path.join(root, 'dist');
-const port = 4173;
+const port = 4174;
 
 const contentTypes = {
   '.html': 'text/html; charset=utf-8',

@@ -1,12 +1,30 @@
-﻿{
+{
   "name": "bbmb-index",
   "private": true,
   "type": "module",
   "scripts": {
     "extract:pabrai": "node scripts/extract-pabrai-pdf-data.mjs",
-    "build": "node scripts/build-dashboard-data.mjs",
+    "build:data": "node scripts/build-dashboard-data.mjs",
+    "build:app": "vite build",
+    "build": "node scripts/build-dashboard-data.mjs && vite build",
     "serve": "node server.mjs",
-    "dev": "node scripts/build-dashboard-data.mjs && node server.mjs"
+    "dev": "vite",
+    "dev:data": "node server.mjs"
+  },
+  "dependencies": {
+    "@fontsource/geist-mono": "^5.2.7",
+    "@fontsource/geist-sans": "^5.2.5",
+    "d3-array": "^3.2.4",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "framer-motion": "^12.35.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "@vitejs/plugin-react": "^5.1.4",
+    "tailwindcss": "^4.2.1",
+    "vite": "^7.3.1"
   }
 }
-
