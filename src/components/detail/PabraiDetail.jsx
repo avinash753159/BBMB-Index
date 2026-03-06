@@ -38,7 +38,7 @@ export default function PabraiDetail({ view, model, onSetSeries }) {
       </article>
 
       {/* Fund grid: asymmetric 2-column */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         {funds.map((fund) => {
           const { rawColor } = getSeriesAppearance(fund.id);
           return (

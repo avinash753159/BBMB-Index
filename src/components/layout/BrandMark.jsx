@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 
-export default function BrandMark() {
+function BrandMark() {
   return (
     <motion.div
       className="w-[138px] flex-none rounded-[28px] bg-amber-50/92 p-1.5 max-md:w-[108px]"
@@ -40,3 +41,5 @@ export default function BrandMark() {
     </motion.div>
   );
 }
+
+export default memo(BrandMark);

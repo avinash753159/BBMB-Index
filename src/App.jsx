@@ -103,25 +103,30 @@ export default function App() {
 
   return (
     <PageShell>
+      <a href="#dashboard-main" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2 focus:text-white">
+        Skip to content
+      </a>
       <Hero metadata={model.metadata} selectedCount={selectedSeriesIds.length} />
       <FocusTabs views={model.views} activeView={activeView} onViewChange={setActiveView} />
-      <CompareLab
-        seriesById={model.seriesById}
-        selectedSeriesIds={selectedSeriesIds}
-        selectedSeries={selectedSeries}
-        presets={model.presets}
-        activePresetId={activePresetId}
-        onToggle={handleToggle}
-        onPresetSelect={handlePresetSelect}
-      />
-      <AnnualizedStrip selectedSeries={selectedSeries} />
-      <PerformanceChart
-        selectedSeries={selectedSeries}
-        dates={model.dates}
-        windowStart={model.windowStart}
-        windowEnd={model.windowEnd}
-      />
-      <DetailRouter view={activeViewObj} model={model} onSetSeries={handleSetSeries} />
+      <main id="dashboard-main" className="space-y-5">
+        <CompareLab
+          seriesById={model.seriesById}
+          selectedSeriesIds={selectedSeriesIds}
+          selectedSeries={selectedSeries}
+          presets={model.presets}
+          activePresetId={activePresetId}
+          onToggle={handleToggle}
+          onPresetSelect={handlePresetSelect}
+        />
+        <AnnualizedStrip selectedSeries={selectedSeries} />
+        <PerformanceChart
+          selectedSeries={selectedSeries}
+          dates={model.dates}
+          windowStart={model.windowStart}
+          windowEnd={model.windowEnd}
+        />
+        <DetailRouter view={activeViewObj} model={model} onSetSeries={handleSetSeries} />
+      </main>
     </PageShell>
   );
 }
