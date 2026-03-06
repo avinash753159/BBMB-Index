@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const root = process.cwd();
 const dataDir = path.join(root, 'data');
-const appDir = path.join(root, 'app');
+
 const distDir = path.join(root, 'dist');
 
 const windowStart = '2021-03-05';
@@ -143,7 +143,7 @@ function effectiveDate(rawDate, dates) {
 }
 
 function formatPercent(value, digits = 1, signed = true) {
-  if (value === null || value === undefined || Number.isNaN(value)) return '—';
+  if (value === null || value === undefined || Number.isNaN(value)) return 'ï¿½';
   const number = (value * 100).toFixed(digits);
   if (!signed) return `${number}%`;
   return `${value >= 0 ? '+' : ''}${number}%`;
@@ -828,12 +828,7 @@ async function main() {
 
   await fs.writeFile(path.join(distDir, 'dashboard-data.json'), JSON.stringify(dashboardData, null, 2));
 
-  await Promise.all([
-    fs.copyFile(path.join(appDir, 'index.html'), path.join(distDir, 'index.html')),
-    fs.copyFile(path.join(appDir, 'styles.css'), path.join(distDir, 'styles.css')),
-    fs.copyFile(path.join(appDir, 'app.js'), path.join(distDir, 'app.js')),
-    fs.copyFile(path.join(dataDir, 'pabrai_nav.json'), path.join(distDir, 'pabrai_nav.json')), 
-  ]);
+  await fs.copyFile(path.join(dataDir, 'pabrai_nav.json'), path.join(distDir, 'pabrai_nav.json'));
 
   console.log(`Built dashboard data for ${memberData.label}.`);
   console.log(`Modeled return: ${formatPercent(portfolioReturnPct)} vs matched SPY ${formatPercent(benchmarkReturnPct)} (spread ${formatPercent(returnSpreadPct)}).`);
