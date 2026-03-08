@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react';
 import { useDataLoader } from './hooks/useDataLoader';
 import { useModel } from './hooks/useModel';
 import { annualizeReturn, latestNonNull } from './lib/series';
@@ -7,12 +7,12 @@ import Hero from './components/layout/Hero';
 import FocusTabs from './components/focus/FocusTabs';
 import TimeRangeSlider from './components/ui/TimeRangeSlider';
 import MarketCapSlider from './components/ui/MarketCapSlider';
-
 import AnnualizedStrip from './components/metrics/AnnualizedStrip';
-import PerformanceChart from './components/chart/PerformanceChart';
-import YearlyBarChart from './components/chart/YearlyBarChart';
-import DetailRouter from './components/detail/DetailRouter';
-import FilteredHoldingsTable from './components/detail/FilteredHoldingsTable';
+
+const PerformanceChart = lazy(() => import('./components/chart/PerformanceChart'));
+const YearlyBarChart = lazy(() => import('./components/chart/YearlyBarChart'));
+const DetailRouter = lazy(() => import('./components/detail/DetailRouter'));
+const FilteredHoldingsTable = lazy(() => import('./components/detail/FilteredHoldingsTable'));
 
 const MAX_DISPLAY = 5;
 
@@ -237,28 +237,30 @@ export default function App() {
         />
         <MarketCapSlider capMax={capMax} onChange={setCapMax} />
         <AnnualizedStrip selectedSeries={displaySeries} />
-        <PerformanceChart
-          selectedSeries={displaySeries}
-          dates={windowedDates}
-          windowStart={windowedDates[0] ?? model.windowStart}
-          windowEnd={model.windowEnd}
-        />
-        <YearlyBarChart
-          selectedSeries={displaySeries}
-          dates={windowedDates}
-          onActivateView={(id) => {
-            setActiveView(id);
-            if (!selectedSeriesIds.includes(id)) {
-              handleToggle(id);
-            }
-          }}
-        />
-        {capFilteredHoldings.length > 0 && (
-          <FilteredHoldingsTable holdings={capFilteredHoldings} capMax={capMax} />
-        )}
-        {activeViewObj && selectedSeriesIds.includes(activeViewObj.id) && (
-          <DetailRouter view={activeViewObj} model={model} onSetSeries={handleSetSeries} capMax={capMax} />
-        )}
+        <Suspense fallback={null}>
+          <PerformanceChart
+            selectedSeries={displaySeries}
+            dates={windowedDates}
+            windowStart={windowedDates[0] ?? model.windowStart}
+            windowEnd={model.windowEnd}
+          />
+          <YearlyBarChart
+            selectedSeries={displaySeries}
+            dates={windowedDates}
+            onActivateView={(id) => {
+              setActiveView(id);
+              if (!selectedSeriesIds.includes(id)) {
+                handleToggle(id);
+              }
+            }}
+          />
+          {capFilteredHoldings.length > 0 && (
+            <FilteredHoldingsTable holdings={capFilteredHoldings} capMax={capMax} />
+          )}
+          {activeViewObj && selectedSeriesIds.includes(activeViewObj.id) && (
+            <DetailRouter view={activeViewObj} model={model} onSetSeries={handleSetSeries} capMax={capMax} />
+          )}
+        </Suspense>
       </main>
     </PageShell>
   );
