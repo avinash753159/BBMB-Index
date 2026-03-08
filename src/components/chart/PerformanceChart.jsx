@@ -5,15 +5,14 @@ import GlassCard from '../ui/GlassCard';
 import Eyebrow from '../ui/Eyebrow';
 import ChartTooltip from './ChartTooltip';
 import ValueReadout from './ValueReadout';
-import ChartLegend from './ChartLegend';
-import ChartNotes from './ChartNotes';
 import { useChartInteraction } from '../../hooks/useChartInteraction';
-import { formatDate, formatPercent } from '../../lib/formatters';
+import { formatDate, formatPercent, formatAnnualized } from '../../lib/formatters';
+import { annualizeReturn } from '../../lib/series';
 import { getSeriesAppearance } from '../../lib/constants';
 
 const WIDTH = 1100;
-const HEIGHT = 430;
-const PAD = { top: 18, right: 34, bottom: 44, left: 78 };
+const HEIGHT = 400;
+const PAD = { top: 20, right: 160, bottom: 44, left: 70 };
 
 export default function PerformanceChart({ selectedSeries, dates, windowStart, windowEnd }) {
   const svgRef = useRef(null);
@@ -38,7 +37,7 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
       .domain([minV, maxV])
       .range([HEIGHT - PAD.bottom, PAD.top]);
 
-    const gridTicks = yScale.ticks(4);
+    const gridTicks = yScale.ticks(5);
     const zeroY = yScale(0);
 
     const idxs = [
@@ -104,43 +103,50 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
       <div className="flex items-end justify-between gap-4">
         <div>
           <Eyebrow>Performance canvas</Eyebrow>
-          <h2 className="mt-2 text-xl font-semibold leading-tight tracking-tight lg:text-2xl">
-            Every selected line shares the same five-year frame.
-          </h2>
-          <p className="mt-1 text-sm leading-relaxed text-muted">
-            Normalized return from {formatDate(windowStart)} through {formatDate(windowEnd)}.
-            PIF lines stay flat after their latest PDF checkpoint.
+          <p className="mt-1 text-sm text-muted">
+            {formatDate(windowStart)} &ndash; {formatDate(windowEnd)}
           </p>
         </div>
       </div>
 
       <div
         ref={wrapRef}
-        className="relative mt-4 overflow-x-auto rounded-3xl bg-gradient-to-b from-white/90 to-amber-50/70 p-4"
+        className="relative mt-4 overflow-x-auto rounded-2xl bg-bg/60 p-3"
       >
         <svg
           ref={svgRef}
           viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-          className="block h-auto w-full min-w-[900px]"
+          className="block h-auto w-full min-w-[800px]"
           role="img"
           aria-label="Five-year comparison chart"
           onMouseMove={handleMouseMove}
           onMouseLeave={interaction.clearHover}
         >
-          {/* Grid lines + Y labels */}
+          {/* Y-axis title */}
+          <text
+            x={12} y={PAD.top - 6}
+            fill="#94a3b8" fontSize={9} fontWeight="600"
+            fontFamily="var(--font-mono)"
+            textAnchor="start"
+            letterSpacing="0.05em"
+          >
+            ANNUALIZED RETURN
+          </text>
+
+          {/* Grid lines + Y labels (annualized) */}
           {gridTicks.map((tick) => (
             <g key={tick}>
               <line
                 x1={PAD.left} y1={yScale(tick)}
                 x2={WIDTH - PAD.right} y2={yScale(tick)}
-                stroke="rgba(74,61,46,0.08)" strokeWidth={1}
+                stroke="rgba(30,41,59,0.06)" strokeWidth={1}
               />
               <text
                 x={PAD.left - 10} y={yScale(tick) + 4}
-                textAnchor="end" fill="#6b6158" fontSize={12}
+                textAnchor="end" fill="#94a3b8" fontSize={11}
                 fontFamily="var(--font-mono)"
               >
-                {formatPercent(tick)}
+                {formatAnnualized(annualizeReturn(tick, windowStart, windowEnd))}
               </text>
             </g>
           ))}
@@ -149,8 +155,7 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
           <line
             x1={PAD.left} y1={zeroY}
             x2={WIDTH - PAD.right} y2={zeroY}
-            stroke="rgba(23,23,23,0.18)" strokeWidth={1.2}
-            strokeDasharray="4 6"
+            stroke="rgba(30,41,59,0.15)" strokeWidth={1}
           />
 
           {/* Series lines */}
@@ -160,16 +165,16 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
             const isHovered = interaction.hoveredSeriesId === series.id;
             const isDimmed = interaction.hoveredSeriesId && !isHovered;
 
-            // Find last non-null index for endpoint dot
-            let endX = null;
-            let endY = null;
+            // Find last non-null index for endpoint + direct label
+            let endIdx = null;
             for (let i = series.returnPctSeries.length - 1; i >= 0; i--) {
               if (series.returnPctSeries[i] != null) {
-                endX = xScale(i);
-                endY = yScale(series.returnPctSeries[i]);
+                endIdx = i;
                 break;
               }
             }
+            const endX = endIdx !== null ? xScale(endIdx) : null;
+            const endY = endIdx !== null ? yScale(series.returnPctSeries[endIdx]) : null;
 
             return (
               <g key={series.id}>
@@ -177,20 +182,45 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
                   d={path}
                   fill="none"
                   stroke={rawColor}
-                  strokeWidth={isHovered ? 4 : 3.2}
+                  strokeWidth={isHovered ? 3 : 2}
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  opacity={isDimmed ? 0.4 : 1}
+                  opacity={isDimmed ? 0.25 : 1}
                   style={{ transition: 'opacity 200ms, stroke-width 200ms' }}
                 />
                 {endX != null && (
-                  <circle
-                    cx={endX} cy={endY} r={4.8}
-                    fill={rawColor}
-                    stroke="rgba(255,255,255,0.88)" strokeWidth={2}
-                    opacity={isDimmed ? 0.4 : 1}
-                    style={{ transition: 'opacity 200ms' }}
-                  />
+                  <>
+                    <circle
+                      cx={endX} cy={endY} r={3.5}
+                      fill={rawColor}
+                      stroke="#fff" strokeWidth={1.5}
+                      opacity={isDimmed ? 0.25 : 1}
+                      style={{ transition: 'opacity 200ms' }}
+                    />
+                    {/* Direct label at line end */}
+                    <text
+                      x={endX + 8} y={endY}
+                      fill={rawColor}
+                      fontSize={11}
+                      fontWeight="600"
+                      fontFamily="var(--font-sans)"
+                      opacity={isDimmed ? 0.25 : 1}
+                      style={{ transition: 'opacity 200ms' }}
+                    >
+                      {series.shortLabel ?? series.label}
+                    </text>
+                    <text
+                      x={endX + 8} y={endY + 13}
+                      fill={rawColor}
+                      fontSize={9.5}
+                      fontWeight="500"
+                      fontFamily="var(--font-mono)"
+                      opacity={isDimmed ? 0.3 : 0.7}
+                      style={{ transition: 'opacity 200ms' }}
+                    >
+                      {formatAnnualized(series.annualizedReturnPct)}
+                    </text>
+                  </>
                 )}
               </g>
             );
@@ -202,10 +232,9 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
               <line
                 x1={xScale(interaction.hoveredIndex)} y1={PAD.top}
                 x2={xScale(interaction.hoveredIndex)} y2={HEIGHT - PAD.bottom}
-                stroke="rgba(20,18,16,0.3)" strokeWidth={1}
+                stroke="rgba(30,41,59,0.2)" strokeWidth={1}
                 strokeDasharray="3 3" pointerEvents="none"
               />
-              {/* Hover dots on each series at the hovered index */}
               {selectedSeries.map((series) => {
                 const val = series.returnPctSeries[interaction.hoveredIndex];
                 if (val == null) return null;
@@ -215,10 +244,10 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
                     key={series.id}
                     cx={xScale(interaction.hoveredIndex)}
                     cy={yScale(val)}
-                    r={4}
+                    r={3.5}
                     fill={rawColor}
                     stroke="#fff"
-                    strokeWidth={2}
+                    strokeWidth={1.5}
                     pointerEvents="none"
                   />
                 );
@@ -231,7 +260,7 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
             <text
               key={i}
               x={xScale(i)} y={HEIGHT - 12}
-              textAnchor="middle" fill="#6b6158" fontSize={12}
+              textAnchor="middle" fill="#94a3b8" fontSize={11}
               fontFamily="var(--font-mono)"
             >
               {formatDate(dates[i])}
@@ -247,6 +276,7 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
             selectedSeries={selectedSeries}
             mousePosition={interaction.mouseRef.current}
             containerRect={wrapRef.current?.getBoundingClientRect()}
+            windowStart={windowStart}
           />
         )}
       </div>
@@ -255,8 +285,6 @@ export default function PerformanceChart({ selectedSeries, dates, windowStart, w
         selectedSeries={selectedSeries}
         hoveredIndex={interaction.hoveredIndex}
       />
-      <ChartLegend selectedSeries={selectedSeries} />
-      <ChartNotes selectedSeries={selectedSeries} />
     </GlassCard>
   );
 }

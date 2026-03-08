@@ -5,13 +5,13 @@ export default function Chip({ selected, onClick, children, className = '', ...p
     <motion.button
       type="button"
       onClick={onClick}
-      className={`inline-flex cursor-pointer items-center gap-2.5 rounded-full border px-3.5 py-2.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 ${
+      className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-matcha/20 focus-visible:ring-offset-2 ${
         selected
-          ? 'border-transparent bg-gradient-to-br from-stone-900 to-stone-800 text-amber-50'
-          : 'border-line bg-white/70 text-ink hover:border-line-strong'
+          ? 'border-ink/12 bg-ink text-white shadow-sm'
+          : 'border-line bg-surface text-muted hover:border-line-strong hover:text-ink'
       } ${className}`}
-      whileHover={{ y: -1, boxShadow: '0 14px 28px rgba(61,44,23,0.1)' }}
-      whileTap={{ scale: 0.98 }}
+      whileHover={{ y: -1 }}
+      whileTap={{ scale: 0.97 }}
       {...props}
     >
       {children}

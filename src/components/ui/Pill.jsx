@@ -1,14 +1,15 @@
 const kindStyles = {
-  portfolio: 'text-series-avi',
-  composite: 'text-series-pabrai',
-  fund: 'text-series-pif2',
-  benchmark: 'text-series-spy',
-  pending: 'text-muted',
+  portfolio: 'text-matcha bg-matcha-muted',
+  composite: 'text-sriracha bg-sriracha-muted',
+  fund: 'text-muted bg-bg',
+  ticker: 'text-muted bg-bg',
+  benchmark: 'text-thai-tea bg-thai-tea-muted',
+  pending: 'text-subtle bg-bg',
 };
 
 export default function Pill({ kind, children }) {
   return (
-    <span className={`inline-flex items-center rounded-full border border-line bg-white/70 px-2 py-1 text-[0.73rem] font-semibold tracking-wide ${kindStyles[kind] ?? kindStyles.pending}`}>
+    <span className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[0.6875rem] font-medium tracking-wide ${kindStyles[kind] ?? kindStyles.pending}`}>
       {children}
     </span>
   );

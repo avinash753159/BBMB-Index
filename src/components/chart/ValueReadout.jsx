@@ -1,11 +1,10 @@
-import { getSeriesAppearance } from '../../lib/constants';
 import { formatPercent } from '../../lib/formatters';
+import SeriesAvatar from '../ui/SeriesAvatar';
 
 export default function ValueReadout({ selectedSeries, hoveredIndex }) {
   return (
-    <div className="mt-3 flex flex-wrap gap-3">
+    <div className="mt-3 flex flex-wrap gap-2">
       {selectedSeries.map((series) => {
-        const { rawColor } = getSeriesAppearance(series.id);
         const value =
           hoveredIndex !== null
             ? series.returnPctSeries[hoveredIndex]
@@ -13,11 +12,11 @@ export default function ValueReadout({ selectedSeries, hoveredIndex }) {
         return (
           <div
             key={series.id}
-            className="flex items-center gap-2 rounded-full border border-line bg-white/70 px-3 py-1.5 text-sm"
+            className="flex items-center gap-1.5 rounded-lg border border-line bg-bg/60 px-2.5 py-1 text-sm"
           >
-            <span className="h-2 w-2 rounded-full" style={{ background: rawColor }} />
-            <span className="font-semibold">{series.shortLabel}</span>
-            <span className="font-mono text-muted">{formatPercent(value)}</span>
+            <SeriesAvatar id={series.id} size="xs" />
+            <span className="font-medium text-muted">{series.shortLabel}</span>
+            <span className="font-mono font-semibold">{formatPercent(value)}</span>
           </div>
         );
       })}

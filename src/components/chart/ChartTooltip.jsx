@@ -1,36 +1,40 @@
-import { getSeriesAppearance } from '../../lib/constants';
-import { formatPercent, formatDate } from '../../lib/formatters';
+import { formatPercent, formatDate, formatAnnualized } from '../../lib/formatters';
+import { annualizeReturn } from '../../lib/series';
+import SeriesAvatar from '../ui/SeriesAvatar';
 
-export default function ChartTooltip({ hoveredIndex, date, selectedSeries, mousePosition, containerRect }) {
+export default function ChartTooltip({ hoveredIndex, date, selectedSeries, mousePosition, containerRect, windowStart }) {
   const entries = selectedSeries
-    .map((s) => ({
-      id: s.id,
-      label: s.label,
-      value: s.returnPctSeries[hoveredIndex],
-      color: getSeriesAppearance(s.id).rawColor,
-    }))
+    .map((s) => {
+      const value = s.returnPctSeries[hoveredIndex];
+      return {
+        id: s.id,
+        label: s.label,
+        value,
+        annualized: value != null ? annualizeReturn(value, windowStart, date) : null,
+      };
+    })
     .filter((e) => e.value != null)
     .sort((a, b) => b.value - a.value);
 
   if (!entries.length) return null;
 
-  const left = Math.min(mousePosition.x + 16, (containerRect?.width ?? 800) - 200);
+  const left = Math.min(mousePosition.x + 16, (containerRect?.width ?? 800) - 240);
   const top = mousePosition.y - 20;
 
   return (
     <div
-      className="pointer-events-none absolute z-10 rounded-xl border border-line bg-surface/95 px-3 py-2 shadow-card backdrop-blur-lg"
-      style={{ left, top, minWidth: 160 }}
+      className="pointer-events-none absolute z-10 rounded-xl border border-line bg-surface px-3 py-2 shadow-elevated"
+      style={{ left, top, minWidth: 200 }}
     >
-      <p className="font-mono text-xs font-semibold text-muted">{formatDate(date)}</p>
-      <div className="mt-1 grid gap-1">
+      <p className="font-mono text-xs font-medium text-subtle">{formatDate(date)}</p>
+      <div className="mt-1 grid gap-0.5">
         {entries.map((entry) => (
           <div key={entry.id} className="flex items-center justify-between gap-4 text-sm">
             <span className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full" style={{ background: entry.color }} />
-              {entry.label}
+              <SeriesAvatar id={entry.id} size="xs" />
+              <span className="text-muted">{entry.label}</span>
             </span>
-            <span className="font-mono font-semibold">{formatPercent(entry.value)}</span>
+            <span className="font-mono font-semibold">{formatAnnualized(entry.annualized)}</span>
           </div>
         ))}
       </div>

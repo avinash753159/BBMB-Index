@@ -5,9 +5,9 @@ export default function ActionButton({ onClick, children }) {
     <motion.button
       type="button"
       onClick={onClick}
-      className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-accent/25 bg-accent/10 px-3.5 py-2.5 text-sm text-ink transition-colors hover:bg-accent/16 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2"
+      className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-matcha/20 bg-matcha-muted px-3 py-1.5 text-sm font-medium text-matcha transition-colors hover:bg-matcha/12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-matcha/20 focus-visible:ring-offset-2"
       whileHover={{ y: -1 }}
-      whileTap={{ scale: 0.98 }}
+      whileTap={{ scale: 0.97 }}
     >
       {children}
     </motion.button>

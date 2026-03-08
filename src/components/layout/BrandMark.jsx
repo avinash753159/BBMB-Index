@@ -4,39 +4,143 @@ import { motion } from 'framer-motion';
 function BrandMark() {
   return (
     <motion.div
-      className="w-[138px] flex-none rounded-[28px] bg-amber-50/92 p-1.5 max-md:w-[108px]"
-      style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.78), 0 16px 40px rgba(78,55,29,0.06)' }}
-      animate={{ y: [0, -3, 0] }}
-      transition={{ duration: 7, ease: 'easeInOut', repeat: Infinity }}
+      className="flex flex-none items-center gap-0.5 max-md:scale-85"
+      animate={{ y: [0, -4, 0] }}
+      transition={{ duration: 3, ease: 'easeInOut', repeat: Infinity }}
     >
-      <svg viewBox="0 0 190 110" role="presentation" className="block h-auto w-full">
+      {/* Boba tea */}
+      <svg viewBox="0 0 52 72" className="h-14 w-auto" role="presentation">
         <defs>
-          <linearGradient id="cupTea" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#d89a5f" />
-            <stop offset="100%" stopColor="#9c5d2e" />
+          <linearGradient id="boba-tea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#f0a030" />
+            <stop offset="100%" stopColor="#d07818" />
           </linearGradient>
-          <linearGradient id="breadTone" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#f0c46d" />
-            <stop offset="100%" stopColor="#cc8f42" />
+          <linearGradient id="boba-cup" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.18)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0)" />
+            <stop offset="100%" stopColor="rgba(0,0,0,0.04)" />
+          </linearGradient>
+          <clipPath id="cup-clip">
+            <path d="M10 24h32l-4 40c-.6 3.5-3.5 6-7 6H21c-3.5 0-6.4-2.5-7-6z" />
+          </clipPath>
+        </defs>
+
+        {/* Straw */}
+        <rect x="19" y="0" width="3.5" height="28" rx="1.75" fill="#f0c030" />
+        <path d="M20.75 4 Q16 10 19 16" stroke="#f0c030" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+
+        {/* Cup body — clear plastic */}
+        <path d="M10 24h32l-4 40c-.6 3.5-3.5 6-7 6H21c-3.5 0-6.4-2.5-7-6z"
+          fill="rgba(245,240,232,0.55)" stroke="#bfb8a0" strokeWidth="1.2" />
+        <path d="M10 24h32l-4 40c-.6 3.5-3.5 6-7 6H21c-3.5 0-6.4-2.5-7-6z"
+          fill="url(#boba-cup)" />
+
+        {/* Dome lid */}
+        <path d="M9 24 Q26 17.5 43 24" fill="rgba(235,230,220,0.45)" stroke="#bfb8a0" strokeWidth="1.2" />
+        <line x1="9" y1="24" x2="43" y2="24" stroke="#bfb8a0" strokeWidth="1.2" />
+
+        {/* Tea fill (clipped to cup) */}
+        <g clipPath="url(#cup-clip)">
+          {/* Tea liquid */}
+          <rect x="10" y="30" width="32" height="40" fill="url(#boba-tea)" />
+
+          {/* Cream layer on top of tea */}
+          <rect x="10" y="28" width="32" height="4" fill="#f8e8c8" opacity="0.9" />
+          <path d="M14 30c3 1.2 6-.8 9 .4s6-.8 9 .4" stroke="rgba(255,255,255,0.5)" strokeWidth="1.2" fill="none" />
+
+          {/* Ice cubes */}
+          <rect x="17" y="34" width="6" height="5" rx="1.2" fill="rgba(255,255,255,0.3)" transform="rotate(-8 20 36)" />
+          <rect x="28" y="37" width="5.5" height="4.5" rx="1.2" fill="rgba(255,255,255,0.25)" transform="rotate(5 31 39)" />
+          <rect x="20" y="42" width="5" height="4" rx="1.2" fill="rgba(255,255,255,0.2)" transform="rotate(-3 22 44)" />
+
+          {/* Boba pearls — packed at bottom */}
+          <circle cx="19" cy="56" r="3" fill="#2a1608" />
+          <circle cx="26" cy="54" r="3" fill="#2a1608" />
+          <circle cx="33" cy="56" r="3" fill="#2a1608" />
+          <circle cx="22" cy="60" r="3" fill="#2a1608" />
+          <circle cx="29" cy="61" r="3" fill="#2a1608" />
+          <circle cx="16" cy="62" r="2.5" fill="#2a1608" />
+          <circle cx="35" cy="62" r="2.5" fill="#2a1608" />
+          <circle cx="25" cy="65" r="2.5" fill="#2a1608" />
+
+          {/* Pearl shine */}
+          <circle cx="18" cy="55" r="0.9" fill="rgba(255,255,255,0.4)" />
+          <circle cx="25" cy="53" r="0.9" fill="rgba(255,255,255,0.4)" />
+          <circle cx="32" cy="55" r="0.9" fill="rgba(255,255,255,0.35)" />
+          <circle cx="21" cy="59" r="0.8" fill="rgba(255,255,255,0.3)" />
+        </g>
+
+        {/* Cup shine streak */}
+        <path d="M16 30v28" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+
+      {/* Banh mi */}
+      <svg viewBox="0 0 80 44" className="h-11 w-auto" role="presentation">
+        <defs>
+          <linearGradient id="bm-top" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#f5d880" />
+            <stop offset="50%" stopColor="#e8b840" />
+            <stop offset="100%" stopColor="#d4a028" />
+          </linearGradient>
+          <linearGradient id="bm-bottom" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#f0deb8" />
+            <stop offset="100%" stopColor="#e0c888" />
           </linearGradient>
         </defs>
-        <ellipse cx="94" cy="55" rx="88" ry="44" fill="#fff7eb" stroke="#d5c2aa" strokeWidth="2" />
-        <path d="M37 16h9l10 22H45z" fill="#28211a" />
-        <path d="M21 35h50l-7 43c-1.4 9.4-9.5 16.3-19 16.3h-0.3c-9.5 0-17.6-6.9-19-16.3z" fill="#f5ead9" stroke="#5a4937" strokeWidth="3.4" />
-        <path d="M24 46h44l-5 29.5c-0.9 6.5-6.5 11.3-13.1 11.3H42c-6.6 0-12.1-4.8-13.1-11.3z" fill="url(#cupTea)" />
-        <circle cx="36" cy="75" r="4.4" fill="#2c211b" />
-        <circle cx="48" cy="81" r="4.4" fill="#2c211b" />
-        <circle cx="59" cy="74" r="4.4" fill="#2c211b" />
-        <circle cx="44" cy="67" r="3.8" fill="#2c211b" />
-        <circle cx="54" cy="66" r="3.8" fill="#2c211b" />
-        <path d="M15 35h62" stroke="#5a4937" strokeWidth="3.4" strokeLinecap="round" />
-        <path d="M95 50c0-18 17-31 45-31 31 0 47 13 47 30 0 16-17 28-45 28-31 0-47-10-47-27z" fill="url(#breadTone)" stroke="#7d5a34" strokeWidth="3.4" />
-        <path d="M102 55c4 12 18 18 40 18 20 0 32-5 39-15-7 1.9-14.6 2.8-23 2.8h-34.8c-8 0-15.1-1.9-21.2-5.8z" fill="#f7d898" />
-        <path d="M110 46c8 6.2 20 10 34 10 14 0 30-3.2 39-10" stroke="#fff9ef" strokeWidth="5.6" strokeLinecap="round" />
-        <path d="M116 45c0 0 5-8 10-8 5 0 8 6 12 6s7-7 12-7c5 0 7 7 13 7s8-6 13-6" stroke="#3d8a58" strokeWidth="4.8" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M121 51c7 0 12-7 18-7 5 0 10 6 15 6 6 0 9-5 14-5 5 0 11 5 17 5" stroke="#d45a39" strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M124 39c8-6 19-9 35-9" stroke="#f3c355" strokeWidth="4" strokeLinecap="round" />
-        <path d="M112 31l3 7M128 26l3 8M147 24l2.6 8M164 28l2.6 8" stroke="#97673a" strokeWidth="2.8" strokeLinecap="round" />
+
+        {/* Shadow */}
+        <ellipse cx="40" cy="42" rx="30" ry="2" fill="rgba(0,0,0,0.06)" />
+
+        {/* Bottom bread — boat shape */}
+        <path d="M8 24 C10 36, 30 38, 40 38 C50 38, 70 36, 72 24 Z" fill="url(#bm-bottom)" stroke="#c8a848" strokeWidth="0.7" />
+
+        {/* Fillings visible between bread halves */}
+        {/* Meat / pâté */}
+        <path d="M14 26 Q40 30 66 26" stroke="#a06850" strokeWidth="3" strokeLinecap="round" fill="none" />
+
+        {/* Carrots — wavy orange */}
+        <path d="M14 23 c5-1 8 1 13 0s8 1 13 0 8 1 13 0 8 1 12 0" stroke="#e87530" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+        <path d="M18 24 c4-.8 7 .8 11 0 s7 .8 11 0 7 .8 10 0" stroke="#f09848" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.5" />
+
+        {/* Daikon — white/cream */}
+        <path d="M16 21.5 Q40 19 64 21.5" stroke="#f0e8d0" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+
+        {/* Cucumber */}
+        <ellipse cx="26" cy="20" rx="2.5" ry="1.5" fill="#78b050" stroke="#58903a" strokeWidth="0.4" />
+        <ellipse cx="40" cy="19.5" rx="2.5" ry="1.5" fill="#78b050" stroke="#58903a" strokeWidth="0.4" />
+        <ellipse cx="54" cy="20" rx="2.5" ry="1.5" fill="#78b050" stroke="#58903a" strokeWidth="0.4" />
+
+        {/* Jalapeño */}
+        <circle cx="33" cy="19" r="1.6" fill="#3d8828" stroke="#2a6818" strokeWidth="0.3" />
+        <circle cx="47" cy="19" r="1.6" fill="#3d8828" stroke="#2a6818" strokeWidth="0.3" />
+
+        {/* Cilantro — leafy sprigs at each end */}
+        <g stroke="#3a8028" fill="none" strokeLinecap="round">
+          <path d="M11 20 c-2-3.5-5-4.5-6-2" strokeWidth="1.1" />
+          <path d="M10 21 c-3-1.5-6-1.5-6 .5" strokeWidth="0.9" />
+          <path d="M12 19 c-1.5-3-4-4.5-5-1.5" strokeWidth="0.8" />
+          <path d="M69 20 c2-3.5 5-4.5 6-2" strokeWidth="1.1" />
+          <path d="M70 21 c3-1.5 6-1.5 6 .5" strokeWidth="0.9" />
+          <path d="M68 19 c1.5-3 4-4.5 5-1.5" strokeWidth="0.8" />
+        </g>
+
+        {/* Top bread — golden baguette dome */}
+        <path d="M6 24 C8 6, 28 0, 40 0 C52 0, 72 6, 74 24 Z" fill="url(#bm-top)" />
+        <path d="M6 24 C8 6, 28 0, 40 0 C52 0, 72 6, 74 24" fill="none" stroke="#c09018" strokeWidth="1" />
+
+        {/* Score lines */}
+        <path d="M24 6 L26.5 17" stroke="#c8a840" strokeWidth="1.5" strokeLinecap="round" opacity="0.55" />
+        <path d="M35 3 L37 16" stroke="#c8a840" strokeWidth="1.5" strokeLinecap="round" opacity="0.55" />
+        <path d="M46 3 L48 16" stroke="#c8a840" strokeWidth="1.5" strokeLinecap="round" opacity="0.55" />
+        <path d="M57 6 L59 17" stroke="#c8a840" strokeWidth="1.5" strokeLinecap="round" opacity="0.55" />
+
+        {/* Bread shine */}
+        <path d="M28 5 c8-1.5 16-1.5 24 0" stroke="rgba(255,255,255,0.35)" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+
+        {/* Flour dusting */}
+        <circle cx="31" cy="9" r="1" fill="rgba(255,255,255,0.18)" />
+        <circle cx="42" cy="7" r="1.2" fill="rgba(255,255,255,0.14)" />
+        <circle cx="52" cy="9" r="0.9" fill="rgba(255,255,255,0.16)" />
       </svg>
     </motion.div>
   );

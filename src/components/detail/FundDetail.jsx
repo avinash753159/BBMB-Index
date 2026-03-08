@@ -9,7 +9,7 @@ export default function FundDetail({ view, model, onSetSeries }) {
   return (
     <section className="grid gap-6">
       {/* Main card */}
-      <article className="rounded-[var(--radius-xl)] border border-line bg-surface p-6 shadow-card backdrop-blur-xl">
+      <article className="rounded-[var(--radius-xl)] border border-line bg-surface p-6 shadow-card">
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div className="max-w-prose space-y-2">
             <Eyebrow>{fund.label} fund view</Eyebrow>
@@ -35,31 +35,6 @@ export default function FundDetail({ view, model, onSetSeries }) {
         </div>
       </article>
 
-      {/* Split: checkpoint explanation + source files */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <article className="rounded-[var(--radius-xl)] border border-line bg-surface p-6 shadow-card backdrop-blur-xl">
-          <Eyebrow>Checkpoint behavior</Eyebrow>
-          <h3 className="mt-2 text-lg font-semibold tracking-tight">
-            Why the line goes flat near the end.
-          </h3>
-          <p className="mt-4 text-sm leading-relaxed text-muted">
-            The supplied PDFs run through December 31, 2025. After that checkpoint, each single-fund
-            line stays flat until a newer report is added.
-          </p>
-        </article>
-
-        <article className="rounded-[var(--radius-xl)] border border-line bg-surface p-6 shadow-card backdrop-blur-xl">
-          <Eyebrow>Source files</Eyebrow>
-          <h3 className="mt-2 text-lg font-semibold tracking-tight">
-            PDFs behind this fund line.
-          </h3>
-          <ul className="mt-4 space-y-2 pl-4 text-sm leading-relaxed text-muted list-disc">
-            {model.sourcePdfs.map((source, i) => (
-              <li key={i}>{source.split('\\').pop() || source}</li>
-            ))}
-          </ul>
-        </article>
-      </div>
     </section>
   );
 }
