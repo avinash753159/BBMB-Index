@@ -62,7 +62,7 @@ export default function TimeRangeSlider({ dates, startIdx, onChange }) {
           {yearTicks.filter((t) => t.idx <= maxStart).map((t) => (
             <span
               key={t.year}
-              className="absolute -translate-x-1/2 text-[0.6rem] text-muted/60"
+              className="absolute -translate-x-1/2 text-[0.6rem] text-muted"
               style={{ left: `${(t.idx / maxStart) * 100}%` }}
             >
               {t.year}

@@ -68,7 +68,7 @@ export default function MarketCapSlider({ capMax, onChange }) {
         {ticks.map((t) => (
           <span
             key={t.label}
-            className="absolute -translate-x-1/2 text-[0.6rem] text-muted/60"
+            className="absolute -translate-x-1/2 text-[0.6rem] text-muted"
             style={{ left: `${t.pct}%` }}
           >
             {t.label}
