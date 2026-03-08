@@ -30,6 +30,14 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'framer-motion': ['framer-motion'],
+          'd3': ['d3-array', 'd3-scale', 'd3-shape'],
+        },
+      },
+    },
   },
   server: {
     port: 4173,
