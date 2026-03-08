@@ -2,3 +2,4 @@ commit	perf	a11y	bp	seo	status	description
 5e81f63	28	95	96	91	keep	baseline
 e7248eb	28	95	96	91	keep	darken text-muted and text-subtle for WCAG AA contrast
 ec55693	29	95	96	91	keep	remove opacity modifiers on muted text for contrast
+79ded29	97	95	96	91	keep	fix remaining contrast in Pill and AnnualizedCard (clean server run)
