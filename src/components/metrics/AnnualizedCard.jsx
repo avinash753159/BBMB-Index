@@ -31,7 +31,7 @@ export default function AnnualizedCard({ series }) {
       <span className="mt-1.5 block text-sm text-muted">
         Total return {formatPercent(series.totalReturnPct)}
       </span>
-      <span className="mt-0.5 block text-xs text-subtle">{series.note}</span>
+      <span className="mt-0.5 block text-xs text-muted">{series.note}</span>
     </motion.article>
   );
 }

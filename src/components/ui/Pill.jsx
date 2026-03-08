@@ -4,7 +4,7 @@ const kindStyles = {
   fund: 'text-muted bg-bg',
   ticker: 'text-muted bg-bg',
   benchmark: 'text-thai-tea bg-thai-tea-muted',
-  pending: 'text-subtle bg-bg',
+  pending: 'text-muted bg-bg',
 };
 
 export default function Pill({ kind, children }) {
