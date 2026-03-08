@@ -9,7 +9,9 @@
     "build": "node scripts/build-dashboard-data.mjs && vite build",
     "serve": "node server.mjs",
     "dev": "vite",
-    "dev:data": "node server.mjs"
+    "dev:data": "node server.mjs",
+    "preview": "vite preview --port 4174",
+    "lighthouse": "lighthouse http://localhost:4174 --output=json --output-path=./lighthouse-report.json --chrome-flags=\"--headless --no-sandbox\""
   },
   "dependencies": {
     "@fontsource/geist-mono": "^5.2.7",
@@ -24,6 +26,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.1",
     "@vitejs/plugin-react": "^5.1.4",
+    "lighthouse": "^13.0.3",
     "tailwindcss": "^4.2.1",
     "vite": "^7.3.1"
   }
