@@ -41,12 +41,17 @@ const server = http.createServer(async (request, response) => {
     const ct = contentTypes[ext] ?? 'application/octet-stream';
     const acceptEncoding = request.headers['accept-encoding'] || '';
 
+    // Cache hashed assets for 1 year, other files for 5 min
+    const cacheControl = pathname.startsWith('/assets/')
+      ? 'public, max-age=31536000, immutable'
+      : 'public, max-age=300';
+
     if (compressible.has(ext) && acceptEncoding.includes('gzip')) {
-      response.writeHead(200, { 'content-type': ct, 'content-encoding': 'gzip', 'vary': 'Accept-Encoding' });
+      response.writeHead(200, { 'content-type': ct, 'content-encoding': 'gzip', 'vary': 'Accept-Encoding', 'cache-control': cacheControl });
       pipeline(createReadStream(filePath), zlib.createGzip(), response, () => {});
     } else {
       const data = await fs.readFile(filePath);
-      response.writeHead(200, { 'content-type': ct });
+      response.writeHead(200, { 'content-type': ct, 'cache-control': cacheControl });
       response.end(data);
     }
   } catch (error) {
