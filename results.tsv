@@ -13,3 +13,4 @@ d0d3219	97	100	100	100	keep	aria-hidden on decorative avatars, fix dimmed chip c
 e18442e	97	100	100	100	keep	framer-motion out of initial bundle, CSS hover/tap on Chip/ActionButton
 661668e	97	100	100	100	keep	import only latin-400 font weights, reduce CSS payload
 611d3b0	98	100	100	100	keep	use nav landmark for FocusTabs
+326304d	96	100	100	100	keep	remove 3 unused components (106 lines dead code)
