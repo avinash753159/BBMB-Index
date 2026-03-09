@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { readFileSync, writeFileSync, unlinkSync } from 'node:fs';
+import { readFileSync, writeFileSync, unlinkSync, rmSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 // Serve JSON data files from dist/ during dev
@@ -48,8 +48,22 @@ function inlineCss() {
   };
 }
 
+// Clean old hashed assets before build (emptyOutDir=false preserves data JSON files)
+function cleanAssets() {
+  return {
+    name: 'clean-assets',
+    buildStart() {
+      const assetsDir = resolve('dist', 'assets');
+      if (existsSync(assetsDir)) {
+        rmSync(assetsDir, { recursive: true });
+        mkdirSync(assetsDir, { recursive: true });
+      }
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), tailwindcss(), serveDistJson(), inlineCss()],
+  plugins: [react(), tailwindcss(), serveDistJson(), cleanAssets(), inlineCss()],
   build: {
     outDir: 'dist',
     emptyOutDir: false,
