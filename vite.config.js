@@ -30,6 +30,10 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: false,
+    modulePreload: {
+      resolveDependencies: (_filename, deps) =>
+        deps.filter((dep) => !dep.includes('framer-motion')),
+    },
     rollupOptions: {
       output: {
         manualChunks: {
