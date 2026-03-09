@@ -6,11 +6,12 @@ export function useDataLoader() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('./dashboard-data.json')
-      .then((r) => {
-        if (!r.ok) throw new Error(`Failed to load dashboard data: ${r.status}`);
-        return r.json();
-      })
+    // Reuse the pre-fetched promise from the inline script, or fall back to a fresh fetch
+    const dataPromise = window.__dataPromise || fetch('./dashboard-data.json').then((r) => {
+      if (!r.ok) throw new Error(`Failed to load dashboard data: ${r.status}`);
+      return r.json();
+    });
+    dataPromise
       .then((dashboardData) => {
         // pabraiNav is embedded in dashboard-data.json at build time
         const pabraiNav = dashboardData.pabraiNav ?? null;
