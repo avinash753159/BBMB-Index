@@ -84,3 +84,4 @@ c447ae2	100	100	100	100	keep	remove StrictMode (no-op with Preact, simpler entry
 e489a6d	100	100	100	100	keep	replace plugin-react with @preact/preset-vite (cleaner config)
 6a4ef99	100	100	100	100	keep	uninstall @vitejs/plugin-react (cleaner deps)
 96fd0a4	100	100	100	100	keep	esnext build target (no size change, cleaner config)
+efd0c6d	100	100	100	100	keep	remove unused @fontsource font packages
