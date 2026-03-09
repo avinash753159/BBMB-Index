@@ -1386,6 +1386,16 @@ async function main() {
     delete member.windowEnd;
     // Strip verbose description for superinvestors (client has fallback text)
     if (member.strategyType === 'superinvestor') delete member.description;
+    // Strip realizedPositions (not used by frontend)
+    delete member.realizedPositions;
+    // Slim trackedOpenPositions to only fields used by frontend: ticker, currentWeightPct, marketCap
+    if (member.trackedOpenPositions) {
+      member.trackedOpenPositions = member.trackedOpenPositions.map(p => ({
+        ticker: p.ticker,
+        currentWeightPct: p.currentWeightPct,
+        marketCap: p.marketCap,
+      }));
+    }
     // Strip null fields from holdings and shorten keys to reduce payload
     // t=ticker, w=weight, r=returnPct, m=marketCap
     if (member.holdings) {
