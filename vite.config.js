@@ -64,6 +64,14 @@ function cleanAssets() {
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), serveDistJson(), cleanAssets(), inlineCss()],
+  resolve: {
+    alias: {
+      'react': 'preact/compat',
+      'react-dom': 'preact/compat',
+      'react-dom/client': 'preact/compat/client',
+      'react/jsx-runtime': 'preact/jsx-runtime',
+    },
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: false,
