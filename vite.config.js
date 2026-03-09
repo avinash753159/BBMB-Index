@@ -67,6 +67,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: false,
+    target: 'esnext',
     modulePreload: { polyfill: false },
     rollupOptions: {},
   },
