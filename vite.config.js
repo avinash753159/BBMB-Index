@@ -30,14 +30,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: false,
-    modulePreload: {
-      resolveDependencies: (_filename, deps) =>
-        deps.filter((dep) => !dep.includes('framer-motion')),
-    },
     rollupOptions: {
       output: {
         manualChunks: {
-          'framer-motion': ['framer-motion'],
           'd3': ['d3-array', 'd3-scale', 'd3-shape'],
         },
       },

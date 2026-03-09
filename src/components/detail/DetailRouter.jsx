@@ -1,4 +1,3 @@
-import { motion, AnimatePresence } from 'framer-motion';
 import AviDetail from './AviDetail';
 import PabraiDetail from './PabraiDetail';
 import FundDetail from './FundDetail';
@@ -27,16 +26,8 @@ export default function DetailRouter({ view, model, onSetSeries, capMax }) {
   })();
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={view.id}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.2 }}
-      >
-        {inner}
-      </motion.div>
-    </AnimatePresence>
+    <div key={view.id} className="animate-fade-in">
+      {inner}
+    </div>
   );
 }
