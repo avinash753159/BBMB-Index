@@ -66,7 +66,7 @@ export default function FocusTabs({ views, allSeries, selectedSeriesIds, onToggl
       )}
       {brosSeries.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
-          <Eyebrow className="mr-1">Bond Me Bros</Eyebrow>
+          <Eyebrow className="mr-1">Boba Banh Mi Bros</Eyebrow>
           {renderChips(brosSeries)}
         </div>
       )}
