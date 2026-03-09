@@ -1,12 +1,8 @@
 import { memo } from 'react';
-import { motion } from 'framer-motion';
 
 function BrandMark() {
   return (
-    <motion.div
-      className="flex flex-none items-center gap-0.5 max-md:scale-85"
-      animate={{ y: [0, -4, 0] }}
-      transition={{ duration: 3, ease: 'easeInOut', repeat: Infinity }}
+    <div className="flex flex-none items-center gap-0.5 max-md:scale-85"
     >
       {/* Boba tea */}
       <svg viewBox="0 0 52 72" className="h-14 w-auto" role="presentation">
@@ -142,7 +138,7 @@ function BrandMark() {
         <circle cx="42" cy="7" r="1.2" fill="rgba(255,255,255,0.14)" />
         <circle cx="52" cy="9" r="0.9" fill="rgba(255,255,255,0.16)" />
       </svg>
-    </motion.div>
+    </div>
   );
 }
 
