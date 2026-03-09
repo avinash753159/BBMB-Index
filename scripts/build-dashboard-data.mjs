@@ -1386,6 +1386,18 @@ async function main() {
     delete member.warnings;
     delete member.attribution;
     delete member.currentUnclassifiedHoldings;
+    delete member.strategyNote;
+    delete member.sourcePdfs;
+    // Strip unused stats sub-fields
+    if (member.stats) {
+      delete member.stats.benchmarkReturnPct;
+      delete member.stats.annualizedBenchmarkReturnPct;
+      delete member.stats.realizedNamesWithoutSize;
+      delete member.stats.excludedSnapshotWeightPct;
+      delete member.stats.cashSnapshotWeightPct;
+      delete member.stats.quarterCount;
+      delete member.stats.totalContributedCapitalUsd;
+    }
     if (member.chart) {
       delete member.chart.dates;
       delete member.chart.benchmarkReturnPctSeries;
