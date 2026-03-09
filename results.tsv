@@ -81,3 +81,4 @@ c4b753f	100	100	100	100	keep	use h1/p in skeleton to match React LCP element (LC
 b2d2922	100	100	100	100	keep	swap React for Preact (bundle 213KB→40KB, LCP 2010→1558ms)
 5116747	100	100	100	100	keep	unique Dataroma link text per investor
 c447ae2	100	100	100	100	keep	remove StrictMode (no-op with Preact, simpler entry)
+e489a6d	100	100	100	100	keep	replace plugin-react with @preact/preset-vite (cleaner config)
