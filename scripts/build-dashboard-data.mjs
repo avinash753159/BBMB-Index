@@ -1370,7 +1370,6 @@ async function main() {
     },
     dates: baseDates,
     members: [memberData, ...externalMembers, ...pendingMembers],
-    group: groupData,
   };
 
   // Remove duplicated dates arrays from each member's chart (saves ~4.5MB)
@@ -1379,6 +1378,8 @@ async function main() {
     if (member.chart) {
       delete member.chart.dates;
       delete member.chart.benchmarkReturnPctSeries;
+      delete member.chart.portfolioLabel;
+      delete member.chart.benchmarkLabel;
     }
   }
 
