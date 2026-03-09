@@ -12,3 +12,4 @@ d0d3219	97	100	100	100	keep	aria-hidden on decorative avatars, fix dimmed chip c
 5037113	98	100	100	100	keep	remove infinite bounce from BrandMark, simplify code
 e18442e	97	100	100	100	keep	framer-motion out of initial bundle, CSS hover/tap on Chip/ActionButton
 661668e	97	100	100	100	keep	import only latin-400 font weights, reduce CSS payload
+611d3b0	98	100	100	100	keep	use nav landmark for FocusTabs
