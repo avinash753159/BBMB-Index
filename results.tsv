@@ -29,3 +29,4 @@ b01c80b	98	100	100	100	keep	sortable columns on FilteredHoldingsTable (Ticker/In
 fd1248f	98	100	100	100	keep	remove unused yearsBetween import, unexport internal helper
 3a7a9f8	96	100	100	100	keep	skip modulepreload for framer-motion (defer 131KB lazy chunk)
 4ef830c	94	100	100	100	keep	remove legacy app/ directory (1798 lines dead code)
+a5eb496	97	100	100	100	keep	delete unused Chip.jsx, dedupe formatCap, fix formatPercent args
