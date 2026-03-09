@@ -2,6 +2,16 @@ import { useMemo } from 'react';
 import { formatDate } from '../lib/formatters';
 import { annualizeReturn, latestNonNull, interpolateSeriesValue } from '../lib/series';
 
+// Expand short holding keys: t->ticker, w->weight, r->returnPct, m->marketCap
+function expandHolding(h) {
+  const row = { ticker: h.t ?? h.ticker, weight: h.w ?? h.weight };
+  const ret = h.r ?? h.returnPct;
+  const cap = h.m ?? h.marketCap;
+  if (ret != null) row.returnPct = ret;
+  if (cap != null) row.marketCap = cap;
+  return row;
+}
+
 function unpackSeries(chart) {
   const raw = chart?.portfolioReturnPctSeries ?? [];
   const startIdx = chart?.chartStartIdx ?? 0;
@@ -84,7 +94,7 @@ function buildModel(rawData, pabraiNav) {
       kind: 'superinvestor',
       category: 'superinvestors',
       managerId: m.managerId ?? null,
-      holdings: m.holdings ?? [],
+      holdings: (m.holdings ?? []).map(expandHolding),
       returnPctSeries: unpackSeries(m.chart),
       totalReturnPct: m.stats?.portfolioReturnPct ?? null,
       annualizedReturnPct: m.stats?.annualizedPortfolioReturnPct ?? null,

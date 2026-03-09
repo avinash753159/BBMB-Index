@@ -1396,13 +1396,14 @@ async function main() {
     delete member.sourcePdfs;
     // Strip verbose description for superinvestors (client has fallback text)
     if (member.strategyType === 'superinvestor') delete member.description;
-    // Strip null fields from holdings to reduce payload
+    // Strip null fields from holdings and shorten keys to reduce payload
+    // t=ticker, w=weight, r=returnPct, m=marketCap
     if (member.holdings) {
       member.holdings = member.holdings.map(h => {
-        const r = { ticker: h.ticker, weight: h.weight };
-        if (h.returnPct != null) r.returnPct = h.returnPct;
-        if (h.marketCap != null) r.marketCap = h.marketCap;
-        return r;
+        const row = { t: h.ticker, w: h.weight };
+        if (h.returnPct != null) row.r = h.returnPct;
+        if (h.marketCap != null) row.m = h.marketCap;
+        return row;
       });
     }
     // Strip unused stats sub-fields
