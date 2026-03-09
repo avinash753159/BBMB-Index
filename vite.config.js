@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import preact from '@preact/preset-vite';
 import tailwindcss from '@tailwindcss/vite';
 import { readFileSync, writeFileSync, unlinkSync, rmSync, mkdirSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -63,15 +63,7 @@ function cleanAssets() {
 }
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), serveDistJson(), cleanAssets(), inlineCss()],
-  resolve: {
-    alias: {
-      'react': 'preact/compat',
-      'react-dom': 'preact/compat',
-      'react-dom/client': 'preact/compat/client',
-      'react/jsx-runtime': 'preact/jsx-runtime',
-    },
-  },
+  plugins: [preact(), tailwindcss(), serveDistJson(), cleanAssets(), inlineCss()],
   build: {
     outDir: 'dist',
     emptyOutDir: false,
