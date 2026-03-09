@@ -1426,8 +1426,8 @@ async function main() {
         const startIdx = series.findIndex(v => v !== null);
         const trimmed = startIdx > 0 ? series.slice(startIdx) : series;
         if (startIdx > 0) member.chart.chartStartIdx = startIdx;
-        // Encode as scaled integers (×10000) then delta-encode for compact JSON
-        const scaled = trimmed.map(v => v === null ? null : Math.round(v * 1e4));
+        // Encode as scaled integers (×1000) then delta-encode for compact JSON
+        const scaled = trimmed.map(v => v === null ? null : Math.round(v * 1e3));
         const deltas = [scaled[0]];
         for (let i = 1; i < scaled.length; i++) {
           deltas.push(scaled[i] - scaled[i - 1]);

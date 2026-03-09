@@ -15,10 +15,10 @@ function expandHolding(h) {
 function unpackSeries(chart) {
   const raw = chart?.portfolioReturnPctSeries ?? [];
   const startIdx = chart?.chartStartIdx ?? 0;
-  // Undo delta encoding, then decode scaled integers (×10000) back to floats
+  // Undo delta encoding, then decode scaled integers (×1000) back to floats
   const values = [raw[0]];
   for (let i = 1; i < raw.length; i++) values.push(values[i - 1] + raw[i]);
-  const series = values.map(v => v === null ? null : v / 1e4);
+  const series = values.map(v => v === null ? null : v / 1e3);
   if (startIdx > 0) return [...new Array(startIdx).fill(null), ...series];
   return series;
 }
