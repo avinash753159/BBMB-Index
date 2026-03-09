@@ -80,7 +80,7 @@ export default function TopHoldingsCards({ displaySeries, seriesById }) {
       cards.push({
         id: s.id,
         label: s.shortLabel ?? s.label,
-        holdings: full.holdings,
+        holdings: full.holdings.map((h) => ({ ...h, weight: h.weight != null ? h.weight * 100 : null })),
         dataromaUrl: managerId ? `https://www.dataroma.com/m/holdings.php?m=${managerId}` : null,
       });
     } else if (s.kind === 'portfolio' || s.kind === 'composite') {
