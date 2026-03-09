@@ -6,7 +6,7 @@ export default function Hero() {
       <BrandMark />
       <div className="min-w-0">
         <h1 className="text-xl font-semibold tracking-tight text-ink md:text-2xl">
-          Boba Bonh Mi Bros
+          Boba Banh Mi Bros
         </h1>
         <p className="text-sm text-muted">
           Invert the bros

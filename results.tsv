@@ -49,3 +49,5 @@ ca4e6f4	79	100	100	100	discard	strip unused metadata fields (perf dropped)
 ca4e6f4	75	100	100	100	discard	non-lazy AnnualizedStrip (perf dropped 80->75)
 ab6b3f9	79	100	100	100	discard	fetchpriority=high on data preload (perf dropped)
 ab6b3f9	79	100	100	100	discard	remove pabrai_nav.json preload (perf dropped)
+73a9990	81	100	100	100	keep	remove framer-motion dependency (131KB), use CSS fade-in
+7a041fb	81	100	100	100	keep	fix title typo 'Bonh' -> 'Banh' in index.html

@@ -1,1 +1,0 @@
-import{j as r}from"./framer-motion-H0aHMFgk.js";function o({children:s,className:a="",as:e="section",...d}){return r.jsx(e,{className:`relative rounded-[var(--radius-xl)] border border-line bg-surface shadow-card ${a}`,...d,children:r.jsx("div",{className:"relative",children:s})})}export{o as G};
