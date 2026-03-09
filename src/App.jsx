@@ -253,7 +253,6 @@ export default function App() {
           startIdx={rangeStartIdx}
           onChange={setRangeStartIdx}
         />
-        <MarketCapSlider capMax={capMax} onChange={setCapMax} />
         <Suspense fallback={null}>
           <AnnualizedStrip selectedSeries={displaySeries} />
           <PerformanceChart
@@ -262,7 +261,8 @@ export default function App() {
             windowStart={windowedDates[0] ?? model.windowStart}
             windowEnd={model.windowEnd}
           />
-          <TopHoldingsCards displaySeries={displaySeries} seriesById={model.seriesById} />
+          <MarketCapSlider capMax={capMax} onChange={setCapMax} />
+          <TopHoldingsCards displaySeries={displaySeries} seriesById={model.seriesById} capMax={capMax} />
           <YearlyBarChart
             selectedSeries={displaySeries}
             dates={windowedDates}

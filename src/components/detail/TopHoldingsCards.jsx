@@ -19,7 +19,11 @@ function formatCap(cap) {
   return `$${cap.toLocaleString()}`;
 }
 
-function HoldingsCard({ id, label, holdings, dataromaUrl }) {
+function HoldingsCard({ id, label, holdings, dataromaUrl, capMax }) {
+  const filtered = capMax < 5e12
+    ? holdings.filter((h) => h.marketCap && h.marketCap <= capMax)
+    : holdings;
+
   return (
     <GlassCard className="p-4">
       <div className="mb-3 flex items-center gap-2">
@@ -37,22 +41,28 @@ function HoldingsCard({ id, label, holdings, dataromaUrl }) {
           <span className="text-sm font-semibold text-ink">{label}</span>
         )}
       </div>
-      <div className="space-y-1.5">
-        {holdings.slice(0, 5).map((h) => (
-          <div key={h.ticker} className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-1.5">
-              <TickerLogo ticker={h.ticker} size={16} />
-              <span className="font-mono font-medium">{h.ticker}</span>
+      {filtered.length === 0 ? (
+        <p className="py-4 text-center text-xs text-muted">
+          No holdings under {formatCap(capMax)}
+        </p>
+      ) : (
+        <div className="space-y-1.5">
+          {filtered.slice(0, 5).map((h) => (
+            <div key={h.ticker} className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-1.5">
+                <TickerLogo ticker={h.ticker} size={16} />
+                <span className="font-mono font-medium">{h.ticker}</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted">
+                <span>{formatCap(h.marketCap)}</span>
+                <span className="w-12 text-right font-mono">
+                  {h.weight != null ? `${h.weight.toFixed(1)}%` : '—'}
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-muted">
-              <span>{formatCap(h.marketCap)}</span>
-              <span className="w-12 text-right font-mono">
-                {h.weight != null ? `${h.weight.toFixed(1)}%` : '—'}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       {dataromaUrl && (
         <a
           href={dataromaUrl}
@@ -67,7 +77,7 @@ function HoldingsCard({ id, label, holdings, dataromaUrl }) {
   );
 }
 
-export default function TopHoldingsCards({ displaySeries, seriesById }) {
+export default function TopHoldingsCards({ displaySeries, seriesById, capMax = 5e12 }) {
   const cards = [];
 
   for (const s of displaySeries) {
@@ -103,7 +113,7 @@ export default function TopHoldingsCards({ displaySeries, seriesById }) {
       <Eyebrow>Top Holdings</Eyebrow>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {cards.map((c) => (
-          <HoldingsCard key={c.id} {...c} />
+          <HoldingsCard key={c.id} {...c} capMax={capMax} />
         ))}
       </div>
     </div>
