@@ -66,3 +66,4 @@ b64df27	99	100	100	100	keep	embed pabrai_nav into dashboard-data (one fewer fetc
 56f2c96	99	100	100	100	keep	increase downsample step to 15 (monthly, 281KB->252KB)
 c271330	99	100	100	100	keep	remove unused AviDetail import and file (dead code)
 1d58d08	99	100	100	100	keep	strip unused realizedPositions and slim trackedOpenPositions
+54344a4	99	100	100	100	keep	pre-fetch data via inline script (LCP 2163->2016)
