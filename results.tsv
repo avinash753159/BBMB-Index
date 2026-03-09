@@ -47,3 +47,5 @@ bbd5442	80	100	100	100	keep	global delta flag, simplify unpackSeries
 ca4e6f4	79	100	100	100	discard	compress dates to integer day-offsets (perf dropped)
 ca4e6f4	79	100	100	100	discard	strip unused metadata fields (perf dropped)
 ca4e6f4	75	100	100	100	discard	non-lazy AnnualizedStrip (perf dropped 80->75)
+ab6b3f9	79	100	100	100	discard	fetchpriority=high on data preload (perf dropped)
+ab6b3f9	79	100	100	100	discard	remove pabrai_nav.json preload (perf dropped)
