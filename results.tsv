@@ -14,3 +14,16 @@ e18442e	97	100	100	100	keep	framer-motion out of initial bundle, CSS hover/tap o
 661668e	97	100	100	100	keep	import only latin-400 font weights, reduce CSS payload
 611d3b0	98	100	100	100	keep	use nav landmark for FocusTabs
 326304d	96	100	100	100	keep	remove 3 unused components (106 lines dead code)
+598033e	93	100	100	100	keep	remove unused compare/ directory (78 lines dead code)
+3e87053	97	100	100	100	keep	remove unused formatNumber export (7 lines dead code)
+d61fcd2	94	100	100	100	keep	compact dashboard-data.json (27MB->10.5MB, 61.7% reduction)
+67b4d6b	98	100	100	100	keep	preload dashboard-data.json (perf 94->98)
+78f05a9	98	100	100	100	keep	remove 4 unused CSS custom properties
+4725451	98	100	100	100	keep	remove unused model properties (presets, pabraiNav, sourcePdfs)
+13a9a45	97	100	100	100	keep	remove AnimatedNumber component (40 lines), inline formatted value
+cd32cb1	98	100	100	100	keep	deduplicate dates array across 84 members (10.5MB->5.8MB)
+803ce47	98	100	100	100	keep	strip unused benchmarkReturnPctSeries (5.8MB->3.0MB)
+ac26fe1	94	100	100	100	keep	strip unused group, portfolioLabel, benchmarkLabel from data
+b01c80b	98	100	100	100	keep	sortable columns on FilteredHoldingsTable (Ticker/Investor/Weight/MktCap/5yr)
+91a9ab1	92	100	100	100	keep	preload pabrai_nav.json alongside dashboard data
+fd1248f	98	100	100	100	keep	remove unused yearsBetween import, unexport internal helper
