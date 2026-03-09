@@ -69,7 +69,6 @@ export default defineConfig({
     emptyOutDir: false,
     target: 'esnext',
     modulePreload: { polyfill: false },
-    rollupOptions: {},
   },
   server: {
     port: 4173,
