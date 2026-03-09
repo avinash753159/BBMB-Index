@@ -7,8 +7,6 @@
   --color-surface: #ffffff;
   --color-surface-muted: rgba(247, 246, 243, 0.92);
   --color-surface-glass: rgba(255, 255, 255, 0.85);
-  --color-surface-elevated: #ffffff;
-
   /* ── Text ── */
   --color-ink: #1a1b23;
   --color-muted: #556275;
@@ -20,7 +18,6 @@
 
   /* ── Semantic Brand Colors ── */
   --color-matcha: #2d6a4f;
-  --color-matcha-light: #40916c;
   --color-matcha-muted: rgba(45, 106, 79, 0.08);
   --color-sriracha: #c1292e;
   --color-sriracha-muted: rgba(193, 41, 46, 0.08);
@@ -54,8 +51,6 @@
   /* ── Shadows ── */
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 24px rgba(0, 0, 0, 0.03);
   --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.06), 0 20px 48px rgba(0, 0, 0, 0.06);
-  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* ── Range slider ── */
