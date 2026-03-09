@@ -87,3 +87,4 @@ e489a6d	100	100	100	100	keep	replace plugin-react with @preact/preset-vite (clea
 efd0c6d	100	100	100	100	keep	remove unused @fontsource font packages
 77757fe	100	100	100	100	keep	remove react and react-dom deps (preact handles all)
 0518820	100	100	100	100	keep	remove empty rollupOptions
+7682611	100	100	100	100	keep	un-export internal-only constants
