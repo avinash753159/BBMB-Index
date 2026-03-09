@@ -1395,6 +1395,15 @@ async function main() {
     delete member.sourcePdfs;
     // Strip verbose description for superinvestors (client has fallback text)
     if (member.strategyType === 'superinvestor') delete member.description;
+    // Strip null fields from holdings to reduce payload
+    if (member.holdings) {
+      member.holdings = member.holdings.map(h => {
+        const r = { ticker: h.ticker, weight: h.weight };
+        if (h.returnPct != null) r.returnPct = h.returnPct;
+        if (h.marketCap != null) r.marketCap = h.marketCap;
+        return r;
+      });
+    }
     // Strip unused stats sub-fields
     if (member.stats) {
       delete member.stats.benchmarkReturnPct;
