@@ -3,4 +3,4 @@ dist/
 .env
 .env.*
 data/dataroma-cache.json
-lighthouse-report.json
+lighthouse-*.json
