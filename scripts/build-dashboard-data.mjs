@@ -1379,6 +1379,10 @@ async function main() {
   // Remove benchmarkReturnPctSeries (frontend reads SPY directly, saves ~2.6MB)
   // Trim leading nulls from portfolio series (saves ~593KB, ~20%)
   for (const member of dashboardData.members) {
+    // Strip unused member-level fields (not consumed by frontend)
+    delete member.source;
+    delete member.componentFunds;
+    delete member.cashHoldings;
     if (member.chart) {
       delete member.chart.dates;
       delete member.chart.benchmarkReturnPctSeries;
