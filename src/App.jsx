@@ -6,7 +6,7 @@ import PageShell from './components/layout/PageShell';
 import Hero from './components/layout/Hero';
 import FocusTabs from './components/focus/FocusTabs';
 import TimeRangeSlider from './components/ui/TimeRangeSlider';
-import MarketCapSlider from './components/ui/MarketCapSlider';
+const MarketCapSlider = lazy(() => import('./components/ui/MarketCapSlider'));
 const AnnualizedStrip = lazy(() => import('./components/metrics/AnnualizedStrip'));
 const PerformanceChart = lazy(() => import('./components/chart/PerformanceChart'));
 const YearlyBarChart = lazy(() => import('./components/chart/YearlyBarChart'));
@@ -253,8 +253,8 @@ export default function App() {
           startIdx={rangeStartIdx}
           onChange={setRangeStartIdx}
         />
-        <MarketCapSlider capMax={capMax} onChange={setCapMax} />
         <Suspense fallback={null}>
+          <MarketCapSlider capMax={capMax} onChange={setCapMax} />
           <AnnualizedStrip selectedSeries={displaySeries} />
           <PerformanceChart
             selectedSeries={displaySeries}
