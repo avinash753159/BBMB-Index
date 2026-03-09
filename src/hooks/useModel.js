@@ -37,7 +37,7 @@ function buildModel(rawData, pabraiNav) {
   const avi = rawData.members.find((member) => member.id === 'AVI') ?? null;
   const pabrai = rawData.members.find((member) => member.id === 'PABRAI') ?? null;
   const pendingMembers = rawData.members.filter((member) => member.status === 'pending');
-  const dates = pabrai?.chart?.dates ?? avi?.chart?.dates ?? rawData.group?.chart?.dates ?? [];
+  const dates = rawData.dates ?? pabrai?.chart?.dates ?? avi?.chart?.dates ?? rawData.group?.chart?.dates ?? [];
   const windowStart = rawData.metadata.windowStart;
   const windowEnd = rawData.metadata.windowEnd;
 

@@ -1368,9 +1368,15 @@ async function main() {
         'Pabrai Funds PDFs supplied by the user, extracted into NAV checkpoints through December 31, 2025',
       ],
     },
+    dates: baseDates,
     members: [memberData, ...externalMembers, ...pendingMembers],
     group: groupData,
   };
+
+  // Remove duplicated dates arrays from each member's chart (saves ~4.5MB)
+  for (const member of dashboardData.members) {
+    if (member.chart) delete member.chart.dates;
+  }
 
   // Compact JSON: round floats to 6 decimal places to shrink payload
   const replacer = (_key, value) =>
