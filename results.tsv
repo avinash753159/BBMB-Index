@@ -30,3 +30,10 @@ fd1248f	98	100	100	100	keep	remove unused yearsBetween import, unexport internal
 3a7a9f8	96	100	100	100	keep	skip modulepreload for framer-motion (defer 131KB lazy chunk)
 4ef830c	94	100	100	100	keep	remove legacy app/ directory (1798 lines dead code)
 a5eb496	97	100	100	100	keep	delete unused Chip.jsx, dedupe formatCap, fix formatPercent args
+c4f981b	75	100	100	100	keep	reduce numeric precision 6→4 decimal places (2323KB→1852KB, 20%)
+5b8c82f	76	100	100	100	keep	strip unused source, componentFunds, cashHoldings from data
+31e881e	72	100	100	100	keep	strip unused warnings, attribution, currentUnclassifiedHoldings
+1c72858	72	100	100	100	keep	strip unused strategyNote, sourcePdfs, and stats sub-fields
+315bf3f	76	100	100	100	keep	encode chart series as scaled integers (1829KB→1527KB, 16.5%)
+203cddf	71	100	100	100	keep	remove unused CSS theme vars (bg-deep, surface-muted, line-strong)
+dc30b06	75	100	100	100	keep	strip verbose description from superinvestor members (15KB)
