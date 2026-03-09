@@ -19,14 +19,6 @@ export function formatAnnualized(value, signed = true) {
   return formatted === '\u2014' ? formatted : `${formatted}/yr`;
 }
 
-export function formatNumber(value, digits = 2) {
-  if (value === null || value === undefined || Number.isNaN(value)) return '\u2014';
-  return new Intl.NumberFormat('en-US', {
-    maximumFractionDigits: digits,
-    minimumFractionDigits: digits,
-  }).format(value);
-}
-
 export function formatMarketCap(value) {
   if (value == null) return '\u2014';
   if (value >= 1e12) return `$${(value / 1e12).toFixed(1)}T`;
