@@ -1368,6 +1368,7 @@ async function main() {
       asOf: '2026-03-05',
       benchmarkSymbol,
       benchmarkName: 'SPDR S&P 500 ETF Trust',
+      chartDeltaEncoded: true,
       sources: [
         'User-provided Vanguard holdings snapshot as of March 5, 2026, 4:15 p.m. ET',
         'User-provided remembered entries and exits for AVI',
@@ -1431,7 +1432,6 @@ async function main() {
           deltas.push(scaled[i] - scaled[i - 1]);
         }
         member.chart.portfolioReturnPctSeries = deltas;
-        member.chart.deltaEncoded = true;
       }
     }
   }

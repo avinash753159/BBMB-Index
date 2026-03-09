@@ -5,12 +5,9 @@ import { annualizeReturn, latestNonNull, interpolateSeriesValue } from '../lib/s
 function unpackSeries(chart) {
   const raw = chart?.portfolioReturnPctSeries ?? [];
   const startIdx = chart?.chartStartIdx ?? 0;
-  // Undo delta encoding if present, then decode scaled integers (×10000) back to floats
-  let values = raw;
-  if (chart?.deltaEncoded) {
-    values = [raw[0]];
-    for (let i = 1; i < raw.length; i++) values.push(values[i - 1] + raw[i]);
-  }
+  // Undo delta encoding, then decode scaled integers (×10000) back to floats
+  const values = [raw[0]];
+  for (let i = 1; i < raw.length; i++) values.push(values[i - 1] + raw[i]);
   const series = values.map(v => v === null ? null : v / 1e4);
   if (startIdx > 0) return [...new Array(startIdx).fill(null), ...series];
   return series;
