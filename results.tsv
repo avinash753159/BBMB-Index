@@ -6,3 +6,4 @@ ec55693	29	95	96	91	keep	remove opacity modifiers on muted text for contrast
 59eeeea	97	95	100	100	keep	darken benchmark pill, add robots.txt and favicon
 e1b1f31	96	100	100	100	keep	darken thai-tea to pass 4.5:1 contrast (a11y 100\!)
 aa25fe3	98	100	100	100	keep	lazy-load chart and detail components (bundle 396->349KB)
+8ecc15e	98	100	100	100	keep	split framer-motion and d3 into vendor chunks (main 349->218KB)

@@ -136,12 +136,13 @@ export default function SeriesAvatar({ id, size = 'md' }) {
       <span
         className={`${sizeClass} flex-none rounded-full`}
         style={{ background: rawColor }}
+        aria-hidden="true"
       />
     );
   }
 
   return (
-    <span className={`${sizeClass} flex-none overflow-hidden rounded-full`}>
+    <span className={`${sizeClass} flex-none overflow-hidden rounded-full`} aria-hidden="true">
       <AvatarSvg />
     </span>
   );

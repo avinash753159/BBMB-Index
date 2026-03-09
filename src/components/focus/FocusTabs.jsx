@@ -8,7 +8,7 @@ function FilterChip({ on, dimmed, matchInfo, onClick, children }) {
       onClick={onClick}
       className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-all duration-150 ${
         dimmed
-          ? 'border-line/50 bg-white/50 text-muted/50 opacity-50'
+          ? 'border-line/50 bg-white/50 text-muted opacity-60'
           : on
             ? 'border-ink bg-ink text-white shadow-md'
             : 'border-line bg-white text-ink hover:border-ink hover:shadow-sm'
