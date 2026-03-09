@@ -1429,7 +1429,7 @@ async function main() {
 
   // Downsample dates and chart series to every 3rd trading day (~weekly)
   // to reduce payload size while maintaining chart visual fidelity
-  const STEP = 10;
+  const STEP = 15;
   const origDates = dashboardData.dates;
   const keepIndices = [];
   for (let i = 0; i < origDates.length; i += STEP) keepIndices.push(i);
