@@ -285,13 +285,18 @@ function buildSuperinvestorMember(portfolio, priceSeries, baseDates, spyPriceByD
   const annualizedBenchmarkReturnPct = annualizeReturn(benchmarkReturnPct, effectiveStart, modelEndDate);
 
   // Current holdings (latest quarter) for the detail table
+  // If full holdings data is available (from scraped holdings page), prefer it
+  // as it has exact weightPct for ALL holdings, not just top ones from history
   const latestQuarter = quarterDates[quarterDates.length - 1];
   const latestRaw = portfolio.quarters[latestQuarter];
-  const latestTotal = Object.values(latestRaw).reduce((s, v) => s + v, 0);
-  const currentHoldings = Object.entries(latestRaw)
+  const useFullHoldings = portfolio.holdings?.length > 0;
+  const holdingsSource = useFullHoldings
+    ? Object.fromEntries(portfolio.holdings.map(h => [h.ticker, h.weightPct]))
+    : latestRaw;
+  const currentHoldings = Object.entries(holdingsSource)
     .map(([ticker, pct]) => ({
       ticker,
-      weight: pct / latestTotal,
+      weight: pct / 100,
       returnPct: (() => {
         const aligned = priceSeries[ticker]?.aligned;
         if (!aligned) return null;
