@@ -64,3 +64,4 @@ b64df27	99	100	100	100	keep	embed pabrai_nav into dashboard-data (one fewer fetc
 82b7b49	99	100	100	100	keep	merge d3 into PerformanceChart chunk (one fewer request)
 926fdad	99	100	100	100	keep	improve skeleton to match real layout structure
 56f2c96	99	100	100	100	keep	increase downsample step to 15 (monthly, 281KB->252KB)
+c271330	99	100	100	100	keep	remove unused AviDetail import and file (dead code)
