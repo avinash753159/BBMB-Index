@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import Pill from '../ui/Pill';
-import AnimatedNumber from './AnimatedNumber';
 import SeriesAvatar from '../ui/SeriesAvatar';
 import { getSeriesAppearance } from '../../lib/constants';
 import { formatAnnualized, formatPercent } from '../../lib/formatters';
@@ -26,7 +25,7 @@ export default function AnnualizedCard({ series }) {
         </div>
       </div>
       <strong className="mt-3 block font-mono text-2xl font-semibold leading-none tracking-tight">
-        <AnimatedNumber value={series.annualizedReturnPct} format={formatAnnualized} />
+        {formatAnnualized(series.annualizedReturnPct)}
       </strong>
       <span className="mt-1.5 block text-sm text-muted">
         Total return {formatPercent(series.totalReturnPct)}
