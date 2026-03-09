@@ -1,4 +1,5 @@
 import { useMemo, useCallback } from 'react';
+import { formatMarketCap } from '../../lib/formatters';
 
 const MAX_CAP = 5e12;
 const LOG_MAX = Math.log10(MAX_CAP);
@@ -13,14 +14,6 @@ function sliderToCap(pct) {
   return Math.pow(10, (pct / 100) * LOG_MAX);
 }
 
-function formatCap(value) {
-  if (value <= 0) return '$0';
-  if (value >= 1e12) return `$${(value / 1e12).toFixed(1)}T`;
-  if (value >= 1e9) return `$${(value / 1e9).toFixed(0)}B`;
-  if (value >= 1e6) return `$${(value / 1e6).toFixed(0)}M`;
-  return `$${(value / 1e3).toFixed(0)}K`;
-}
-
 const TICK_VALUES = [1e9, 1e10, 1e11, 1e12];
 
 export default function MarketCapSlider({ capMax, onChange }) {
@@ -30,7 +23,7 @@ export default function MarketCapSlider({ capMax, onChange }) {
     () =>
       TICK_VALUES.map((v) => ({
         pct: capToSlider(v),
-        label: formatCap(v),
+        label: formatMarketCap(v),
       })),
     [],
   );
@@ -49,7 +42,7 @@ export default function MarketCapSlider({ capMax, onChange }) {
     <div className="space-y-1">
       <div className="flex items-center justify-between text-xs text-muted">
         <span className="font-medium">
-          Market Cap Ceiling: <span className="text-ink">{isMax ? 'No filter' : `≤ ${formatCap(capMax)}`}</span>
+          Market Cap Ceiling: <span className="text-ink">{isMax ? 'No filter' : `≤ ${formatMarketCap(capMax)}`}</span>
         </span>
       </div>
       <div className="relative h-6">

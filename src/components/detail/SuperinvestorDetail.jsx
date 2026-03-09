@@ -75,7 +75,7 @@ export default function SuperinvestorDetail({ view, onSetSeries, capMax }) {
           },
           {
             label: 'Weight',
-            render: (row) => formatPercent(row.weight, 1, false),
+            render: (row) => formatPercent(row.weight, false),
           },
           {
             label: 'Mkt Cap',
