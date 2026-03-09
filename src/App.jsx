@@ -5,7 +5,7 @@ import { annualizeReturn, latestNonNull } from './lib/series';
 import PageShell from './components/layout/PageShell';
 import Hero from './components/layout/Hero';
 import FocusTabs from './components/focus/FocusTabs';
-import TimeRangeSlider from './components/ui/TimeRangeSlider';
+const TimeRangeSlider = lazy(() => import('./components/ui/TimeRangeSlider'));
 const MarketCapSlider = lazy(() => import('./components/ui/MarketCapSlider'));
 const AnnualizedStrip = lazy(() => import('./components/metrics/AnnualizedStrip'));
 const PerformanceChart = lazy(() => import('./components/chart/PerformanceChart'));
@@ -248,12 +248,12 @@ export default function App() {
         maxDisplay={MAX_DISPLAY}
       />
       <main id="dashboard-main" className="space-y-6">
-        <TimeRangeSlider
-          dates={model.dates}
-          startIdx={rangeStartIdx}
-          onChange={setRangeStartIdx}
-        />
         <Suspense fallback={null}>
+          <TimeRangeSlider
+            dates={model.dates}
+            startIdx={rangeStartIdx}
+            onChange={setRangeStartIdx}
+          />
           <MarketCapSlider capMax={capMax} onChange={setCapMax} />
           <AnnualizedStrip selectedSeries={displaySeries} />
           <PerformanceChart
