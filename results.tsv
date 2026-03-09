@@ -51,3 +51,4 @@ ab6b3f9	79	100	100	100	discard	fetchpriority=high on data preload (perf dropped)
 ab6b3f9	79	100	100	100	discard	remove pabrai_nav.json preload (perf dropped)
 73a9990	81	100	100	100	keep	remove framer-motion dependency (131KB), use CSS fade-in
 7a041fb	81	100	100	100	keep	fix title typo 'Bonh' -> 'Banh' in index.html
+299cdaf	93	100	100	100	keep	downsample chart to every 3rd trading day (1320KB->636KB)
