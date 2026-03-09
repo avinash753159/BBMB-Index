@@ -1474,8 +1474,15 @@ async function main() {
     typeof value === 'number' && !Number.isInteger(value)
       ? Math.round(value * 1e4) / 1e4
       : value;
+  // Embed pabrai_nav into dashboard data to eliminate second network request
+  try {
+    const pabraiNav = JSON.parse(await fs.readFile(path.join(dataDir, 'pabrai_nav.json'), 'utf-8'));
+    dashboardData.pabraiNav = pabraiNav;
+  } catch {}
+
   await fs.writeFile(path.join(distDir, 'dashboard-data.json'), JSON.stringify(dashboardData, replacer));
 
+  // Keep standalone copy for dev server compatibility
   await fs.copyFile(path.join(dataDir, 'pabrai_nav.json'), path.join(distDir, 'pabrai_nav.json'));
 
   console.log(`Built dashboard data for ${memberData.label}.`);
