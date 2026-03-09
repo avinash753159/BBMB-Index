@@ -1,16 +1,12 @@
-import { lazy, Suspense } from 'react';
-
-const BrandMark = lazy(() => import('./BrandMark'));
+import BrandMark from './BrandMark';
 
 export default function Hero() {
   return (
     <header className="flex items-center gap-4 py-2">
-      <Suspense fallback={<div className="h-14 w-20 flex-none" />}>
-        <BrandMark />
-      </Suspense>
+      <BrandMark />
       <div className="min-w-0">
         <h1 className="text-xl font-semibold tracking-tight text-ink md:text-2xl">
-          Boba Banh Mi Bros
+          Boba Bonh Mi Bros
         </h1>
         <p className="text-sm text-muted">
           Invert the bros

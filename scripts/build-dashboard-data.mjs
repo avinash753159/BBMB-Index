@@ -1360,9 +1360,22 @@ async function main() {
 
   const dashboardData = {
     metadata: {
+      title: 'Boba Bonh Mi Bros',
+      subtitle: 'Inverse boba index workbench',
+      generatedAt: new Date().toISOString(),
       windowStart: globalWindowStart,
       windowEnd,
+      asOf: '2026-03-05',
+      benchmarkSymbol,
       benchmarkName: 'SPDR S&P 500 ETF Trust',
+      chartDeltaEncoded: true,
+      sources: [
+        'User-provided Vanguard holdings snapshot as of March 5, 2026, 4:15 p.m. ET',
+        'User-provided remembered entries and exits for AVI',
+        'Q4 2025 Morgan Stanley Micron statement pasted by the user',
+        'Yahoo Finance chart API for 5-year daily price history and TRYUSD conversion',
+        'Pabrai Funds PDFs supplied by the user, extracted into NAV checkpoints through December 31, 2025',
+      ],
     },
     dates: baseDates,
     members: [memberData, ...externalMembers, ...pendingMembers],
@@ -1381,31 +1394,15 @@ async function main() {
     delete member.currentUnclassifiedHoldings;
     delete member.strategyNote;
     delete member.sourcePdfs;
-    delete member.benchmarkSymbol;
-    delete member.windowStart;
-    delete member.windowEnd;
     // Strip verbose description for superinvestors (client has fallback text)
     if (member.strategyType === 'superinvestor') delete member.description;
-    // Strip realizedPositions (not used by frontend)
-    delete member.realizedPositions;
-    // Slim trackedOpenPositions to only fields used by frontend: ticker, currentWeightPct, marketCap
-    if (member.trackedOpenPositions) {
-      member.trackedOpenPositions = member.trackedOpenPositions.map(p => ({
-        ticker: p.ticker,
-        currentWeightPct: p.currentWeightPct,
-        marketCap: p.marketCap,
-      }));
-    }
-    // Strip null fields from holdings and shorten keys to reduce payload
-    // t=ticker, w=weight, r=returnPct, m=marketCap
-    // Cap holdings at top 30 by weight to reduce JSON size
+    // Strip null fields from holdings to reduce payload
     if (member.holdings) {
-      const sorted = [...member.holdings].sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
-      member.holdings = sorted.slice(0, 15).map(h => {
-        const row = { t: h.ticker, w: h.weight };
-        if (h.returnPct != null) row.r = h.returnPct;
-        if (h.marketCap != null) row.m = h.marketCap;
-        return row;
+      member.holdings = member.holdings.map(h => {
+        const r = { ticker: h.ticker, weight: h.weight };
+        if (h.returnPct != null) r.returnPct = h.returnPct;
+        if (h.marketCap != null) r.marketCap = h.marketCap;
+        return r;
       });
     }
     // Strip unused stats sub-fields
@@ -1428,8 +1425,8 @@ async function main() {
         const startIdx = series.findIndex(v => v !== null);
         const trimmed = startIdx > 0 ? series.slice(startIdx) : series;
         if (startIdx > 0) member.chart.chartStartIdx = startIdx;
-        // Encode as scaled integers (×1000) then delta-encode for compact JSON
-        const scaled = trimmed.map(v => v === null ? null : Math.round(v * 1e3));
+        // Encode as scaled integers (×10000) then delta-encode for compact JSON
+        const scaled = trimmed.map(v => v === null ? null : Math.round(v * 1e4));
         const deltas = [scaled[0]];
         for (let i = 1; i < scaled.length; i++) {
           deltas.push(scaled[i] - scaled[i - 1]);
@@ -1439,62 +1436,13 @@ async function main() {
     }
   }
 
-  // Downsample dates and chart series to every 3rd trading day (~weekly)
-  // to reduce payload size while maintaining chart visual fidelity
-  const STEP = 30;
-  const origDates = dashboardData.dates;
-  const keepIndices = [];
-  for (let i = 0; i < origDates.length; i += STEP) keepIndices.push(i);
-  // Always include the last date
-  if (keepIndices[keepIndices.length - 1] !== origDates.length - 1) {
-    keepIndices.push(origDates.length - 1);
-  }
-  dashboardData.dates = keepIndices.map(i => origDates[i]);
-
-  for (const member of dashboardData.members) {
-    if (member.chart?.portfolioReturnPctSeries) {
-      // Undo delta encoding first
-      const deltas = member.chart.portfolioReturnPctSeries;
-      const values = [deltas[0]];
-      for (let i = 1; i < deltas.length; i++) values.push(values[i - 1] + deltas[i]);
-
-      // Map from original index space to downsampled
-      const startIdx = member.chart.chartStartIdx ?? 0;
-      const sampledValues = keepIndices.map(origIdx => {
-        const seriesIdx = origIdx - startIdx;
-        if (seriesIdx < 0 || seriesIdx >= values.length) return null;
-        return values[seriesIdx];
-      });
-
-      // Find new startIdx and trim leading nulls
-      const newStart = sampledValues.findIndex(v => v !== null);
-      const trimmed = newStart > 0 ? sampledValues.slice(newStart) : sampledValues;
-      if (newStart > 0) member.chart.chartStartIdx = newStart;
-      else delete member.chart.chartStartIdx;
-
-      // Re-delta encode
-      const newDeltas = [trimmed[0]];
-      for (let i = 1; i < trimmed.length; i++) {
-        newDeltas.push(trimmed[i] - trimmed[i - 1]);
-      }
-      member.chart.portfolioReturnPctSeries = newDeltas;
-    }
-  }
-
   // Compact JSON: round floats to 4 decimal places to shrink payload
   const replacer = (_key, value) =>
     typeof value === 'number' && !Number.isInteger(value)
       ? Math.round(value * 1e4) / 1e4
       : value;
-  // Embed pabrai_nav into dashboard data to eliminate second network request
-  try {
-    const pabraiNav = JSON.parse(await fs.readFile(path.join(dataDir, 'pabrai_nav.json'), 'utf-8'));
-    dashboardData.pabraiNav = pabraiNav;
-  } catch {}
-
   await fs.writeFile(path.join(distDir, 'dashboard-data.json'), JSON.stringify(dashboardData, replacer));
 
-  // Keep standalone copy for dev server compatibility
   await fs.copyFile(path.join(dataDir, 'pabrai_nav.json'), path.join(distDir, 'pabrai_nav.json'));
 
   console.log(`Built dashboard data for ${memberData.label}.`);

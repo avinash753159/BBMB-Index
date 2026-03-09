@@ -2,23 +2,13 @@ import { useMemo } from 'react';
 import { formatDate } from '../lib/formatters';
 import { annualizeReturn, latestNonNull, interpolateSeriesValue } from '../lib/series';
 
-// Expand short holding keys: t->ticker, w->weight, r->returnPct, m->marketCap
-function expandHolding(h) {
-  const row = { ticker: h.t ?? h.ticker, weight: h.w ?? h.weight };
-  const ret = h.r ?? h.returnPct;
-  const cap = h.m ?? h.marketCap;
-  if (ret != null) row.returnPct = ret;
-  if (cap != null) row.marketCap = cap;
-  return row;
-}
-
 function unpackSeries(chart) {
   const raw = chart?.portfolioReturnPctSeries ?? [];
   const startIdx = chart?.chartStartIdx ?? 0;
-  // Undo delta encoding, then decode scaled integers (×1000) back to floats
+  // Undo delta encoding, then decode scaled integers (×10000) back to floats
   const values = [raw[0]];
   for (let i = 1; i < raw.length; i++) values.push(values[i - 1] + raw[i]);
-  const series = values.map(v => v === null ? null : v / 1e3);
+  const series = values.map(v => v === null ? null : v / 1e4);
   if (startIdx > 0) return [...new Array(startIdx).fill(null), ...series];
   return series;
 }
@@ -94,7 +84,7 @@ function buildModel(rawData, pabraiNav) {
       kind: 'superinvestor',
       category: 'superinvestors',
       managerId: m.managerId ?? null,
-      holdings: (m.holdings ?? []).map(expandHolding),
+      holdings: m.holdings ?? [],
       returnPctSeries: unpackSeries(m.chart),
       totalReturnPct: m.stats?.portfolioReturnPct ?? null,
       annualizedReturnPct: m.stats?.annualizedPortfolioReturnPct ?? null,

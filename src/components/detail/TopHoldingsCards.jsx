@@ -60,7 +60,7 @@ function HoldingsCard({ id, label, holdings, dataromaUrl }) {
           rel="noopener noreferrer"
           className="mt-3 block text-center text-[0.65rem] text-blue-600 hover:underline"
         >
-          View {label} on Dataroma &rarr;
+          View all on Dataroma &rarr;
         </a>
       )}
     </GlassCard>

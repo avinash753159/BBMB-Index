@@ -1,3 +1,4 @@
+import AviDetail from './AviDetail';
 import PabraiDetail from './PabraiDetail';
 import FundDetail from './FundDetail';
 import TickerDetail from './TickerDetail';

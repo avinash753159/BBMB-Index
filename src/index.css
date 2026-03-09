@@ -37,8 +37,8 @@
   --color-series-norbert: #2e7d32;
 
   /* ── Typography ── */
-  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'Consolas', 'SF Mono', 'Monaco', monospace;
+  --font-sans: 'Geist Sans Variable', 'Geist Sans', system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', 'Consolas', monospace;
 
   /* ── Radius ── */
   --radius-xl: 1.25rem;
