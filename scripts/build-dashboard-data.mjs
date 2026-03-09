@@ -1388,6 +1388,8 @@ async function main() {
     delete member.currentUnclassifiedHoldings;
     delete member.strategyNote;
     delete member.sourcePdfs;
+    // Strip verbose description for superinvestors (client has fallback text)
+    if (member.strategyType === 'superinvestor') delete member.description;
     // Strip unused stats sub-fields
     if (member.stats) {
       delete member.stats.benchmarkReturnPct;
