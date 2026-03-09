@@ -1,4 +1,4 @@
-export const SERIES_COLORS = {
+const SERIES_COLORS = {
   AVI: 'var(--color-series-avi)',
   PABRAI: 'var(--color-series-pabrai)',
   PIF2: 'var(--color-series-pif2)',
@@ -13,7 +13,7 @@ export const SERIES_COLORS = {
   NORBERT: 'var(--color-series-norbert)',
 };
 
-export const SERIES_RAW_COLORS = {
+const SERIES_RAW_COLORS = {
   AVI: '#2d6a4f',
   PABRAI: '#c1292e',
   PIF2: '#8b7355',
@@ -28,7 +28,7 @@ export const SERIES_RAW_COLORS = {
   NORBERT: '#2e7d32',
 };
 
-export const SERIES_KIND_LABELS = {
+const SERIES_KIND_LABELS = {
   AVI: 'Portfolio',
   PABRAI: 'Composite',
   PIF2: 'Fund',
