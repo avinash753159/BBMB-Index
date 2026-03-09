@@ -176,19 +176,10 @@ function buildModel(rawData, pabraiNav) {
     })),
   ].filter(Boolean);
 
-  const presets = [
-    { id: 'avi-spy', label: 'AVI + SPY', seriesIds: ['AVI', 'SPY'] },
-    { id: 'pabrai-spy', label: 'Pabrai (ave) + SPY', seriesIds: ['PABRAI', 'SPY'] },
-    { id: 'avi-pabrai-spy', label: 'AVI + Pabrai (ave) + SPY', seriesIds: ['AVI', 'PABRAI', 'SPY'] },
-    { id: 'avi-pif3-spy', label: 'AVI + PIF3 + SPY', seriesIds: ['AVI', 'PIF3', 'SPY'] },
-    { id: 'pif-deck', label: 'PIF2 + PIF3 + PIF4 + SPY', seriesIds: ['PIF2', 'PIF3', 'PIF4', 'SPY'] },
-  ];
-
   return {
     metadata: rawData.metadata,
     avi,
     pabrai,
-    pabraiNav,
     pendingMembers,
     dates,
     windowStart,
@@ -196,10 +187,8 @@ function buildModel(rawData, pabraiNav) {
     comparisonSeries,
     seriesById,
     views,
-    presets,
     marketCapRange,
     watchlistTickers: pabraiNav?.watchlistTickers ?? [],
-    sourcePdfs: pabraiNav?.sourcePdfs ?? [],
   };
 }
 
