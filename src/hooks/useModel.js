@@ -2,6 +2,15 @@ import { useMemo } from 'react';
 import { formatDate } from '../lib/formatters';
 import { annualizeReturn, latestNonNull, interpolateSeriesValue } from '../lib/series';
 
+function unpackSeries(chart) {
+  const raw = chart?.portfolioReturnPctSeries ?? [];
+  const startIdx = chart?.chartStartIdx ?? 0;
+  // Decode scaled integers (×10000) back to floats
+  const series = raw.map(v => v === null ? null : v / 1e4);
+  if (startIdx > 0) return [...new Array(startIdx).fill(null), ...series];
+  return series;
+}
+
 function buildPifSeries(pabraiNav, dates, windowStart, windowEnd) {
   if (!pabraiNav?.funds || !dates?.length) return [];
 
@@ -23,6 +32,7 @@ function buildPifSeries(pabraiNav, dates, windowStart, windowEnd) {
         label: name,
         shortLabel: name,
         kind: 'fund',
+        category: 'superinvestors',
         returnPctSeries,
         totalReturnPct,
         annualizedReturnPct,
@@ -44,7 +54,7 @@ function buildModel(rawData, pabraiNav) {
   const pifSeries = buildPifSeries(pabraiNav, dates, windowStart, windowEnd);
   // Use the standalone SPY member if available, otherwise fall back to Pabrai's benchmark
   const spyMember = rawData.members.find((m) => m.id === 'SPY' && m.strategyType === 'benchmark');
-  const spyReturnPctSeries = spyMember?.chart?.portfolioReturnPctSeries ?? pabrai?.chart?.benchmarkReturnPctSeries ?? [];
+  const spyReturnPctSeries = unpackSeries(spyMember?.chart) || (pabrai?.chart?.benchmarkReturnPctSeries ?? []);
   const spyTotalReturnPct = spyMember?.stats?.portfolioReturnPct ?? latestNonNull(spyReturnPctSeries);
   const spyAnnualizedReturnPct = spyMember?.stats?.annualizedPortfolioReturnPct ?? annualizeReturn(spyTotalReturnPct, windowStart, windowEnd);
 
@@ -55,7 +65,8 @@ function buildModel(rawData, pabraiNav) {
       label: m.label,
       shortLabel: m.label,
       kind: 'ticker',
-      returnPctSeries: m.chart?.portfolioReturnPctSeries ?? [],
+      category: 'superinvestors',
+      returnPctSeries: unpackSeries(m.chart),
       totalReturnPct: m.stats?.portfolioReturnPct ?? null,
       annualizedReturnPct: m.stats?.annualizedPortfolioReturnPct ?? null,
       description: m.description ?? `${m.ticker} stock.`,
@@ -69,8 +80,10 @@ function buildModel(rawData, pabraiNav) {
       label: m.label,
       shortLabel: m.shortLabel ?? m.label,
       kind: 'superinvestor',
+      category: 'superinvestors',
+      managerId: m.managerId ?? null,
       holdings: m.holdings ?? [],
-      returnPctSeries: m.chart?.portfolioReturnPctSeries ?? [],
+      returnPctSeries: unpackSeries(m.chart),
       totalReturnPct: m.stats?.portfolioReturnPct ?? null,
       annualizedReturnPct: m.stats?.annualizedPortfolioReturnPct ?? null,
       description: m.description ?? `${m.label} backtested portfolio.`,
@@ -89,9 +102,11 @@ function buildModel(rawData, pabraiNav) {
       label: 'AVI',
       shortLabel: 'AVI',
       kind: 'portfolio',
-      returnPctSeries: avi.chart?.portfolioReturnPctSeries ?? [],
+      category: 'bros',
+      returnPctSeries: unpackSeries(avi.chart),
       totalReturnPct: avi.stats?.portfolioReturnPct ?? null,
       annualizedReturnPct: avi.stats?.annualizedPortfolioReturnPct ?? null,
+      trackedOpenPositions: avi.trackedOpenPositions ?? [],
       description: 'Modeled AVI book from open positions plus sized realized exits.',
       note: `${avi.stats?.trackedNames ?? 0} open names, ${avi.stats?.modeledRealizedNames ?? 0} sized exits.`,
     },
@@ -100,7 +115,8 @@ function buildModel(rawData, pabraiNav) {
       label: 'Pabrai (ave)',
       shortLabel: 'Pabrai (ave)',
       kind: 'composite',
-      returnPctSeries: pabrai.chart?.portfolioReturnPctSeries ?? [],
+      category: 'superinvestors',
+      returnPctSeries: unpackSeries(pabrai.chart),
       totalReturnPct: pabrai.stats?.portfolioReturnPct ?? null,
       annualizedReturnPct: pabrai.stats?.annualizedPortfolioReturnPct ?? null,
       latestCheckpoint: pabrai.stats?.latestCheckpoint ?? null,
@@ -115,6 +131,7 @@ function buildModel(rawData, pabraiNav) {
       label: 'SPY',
       shortLabel: 'SPY',
       kind: 'benchmark',
+      category: 'compare',
       returnPctSeries: spyReturnPctSeries,
       totalReturnPct: spyTotalReturnPct,
       annualizedReturnPct: spyAnnualizedReturnPct,

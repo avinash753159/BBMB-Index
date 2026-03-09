@@ -1406,10 +1406,12 @@ async function main() {
       const series = member.chart.portfolioReturnPctSeries;
       if (series) {
         const startIdx = series.findIndex(v => v !== null);
-        if (startIdx > 0) {
-          member.chart.portfolioReturnPctSeries = series.slice(startIdx);
-          member.chart.chartStartIdx = startIdx;
-        }
+        const trimmed = startIdx > 0 ? series.slice(startIdx) : series;
+        if (startIdx > 0) member.chart.chartStartIdx = startIdx;
+        // Encode as scaled integers (×10000) for compact JSON
+        member.chart.portfolioReturnPctSeries = trimmed.map(v =>
+          v === null ? null : Math.round(v * 1e4)
+        );
       }
     }
   }
