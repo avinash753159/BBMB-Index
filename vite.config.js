@@ -53,13 +53,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: false,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'd3': ['d3-array', 'd3-scale', 'd3-shape'],
-        },
-      },
-    },
+    rollupOptions: {},
   },
   server: {
     port: 4173,

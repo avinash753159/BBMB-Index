@@ -60,3 +60,4 @@ bf8f551	96	100	100	100	keep	strip unused metadata and per-member fields (fix tit
 2f08ada	97	100	100	100	keep	remove Geist Mono font, use system monospace (saves 34KB)
 fcd66f2	99	100	100	100	keep	remove Geist Sans font, use system-ui (saves 72KB)
 a5a8779	99	100	100	100	keep	increase downsample step to 10 (315KB->278KB)
+b64df27	99	100	100	100	keep	embed pabrai_nav into dashboard-data (one fewer fetch)
