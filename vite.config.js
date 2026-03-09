@@ -53,6 +53,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: false,
+    modulePreload: { polyfill: false },
     rollupOptions: {},
   },
   server: {
