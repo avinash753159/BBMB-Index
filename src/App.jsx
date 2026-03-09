@@ -7,8 +7,7 @@ import Hero from './components/layout/Hero';
 import FocusTabs from './components/focus/FocusTabs';
 import TimeRangeSlider from './components/ui/TimeRangeSlider';
 import MarketCapSlider from './components/ui/MarketCapSlider';
-import AnnualizedStrip from './components/metrics/AnnualizedStrip';
-
+const AnnualizedStrip = lazy(() => import('./components/metrics/AnnualizedStrip'));
 const PerformanceChart = lazy(() => import('./components/chart/PerformanceChart'));
 const YearlyBarChart = lazy(() => import('./components/chart/YearlyBarChart'));
 const DetailRouter = lazy(() => import('./components/detail/DetailRouter'));
@@ -236,8 +235,8 @@ export default function App() {
           onChange={setRangeStartIdx}
         />
         <MarketCapSlider capMax={capMax} onChange={setCapMax} />
-        <AnnualizedStrip selectedSeries={displaySeries} />
         <Suspense fallback={null}>
+          <AnnualizedStrip selectedSeries={displaySeries} />
           <PerformanceChart
             selectedSeries={displaySeries}
             dates={windowedDates}

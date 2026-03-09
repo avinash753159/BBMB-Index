@@ -9,3 +9,4 @@ aa25fe3	98	100	100	100	keep	lazy-load chart and detail components (bundle 396->3
 8ecc15e	98	100	100	100	keep	split framer-motion and d3 into vendor chunks (main 349->218KB)
 d0d3219	97	100	100	100	keep	aria-hidden on decorative avatars, fix dimmed chip contrast
 4901c35	98	100	100	100	keep	remove animation from Hero, simplify code
+5037113	98	100	100	100	keep	remove infinite bounce from BrandMark, simplify code
