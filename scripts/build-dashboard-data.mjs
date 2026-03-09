@@ -1383,6 +1383,9 @@ async function main() {
     delete member.source;
     delete member.componentFunds;
     delete member.cashHoldings;
+    delete member.warnings;
+    delete member.attribution;
+    delete member.currentUnclassifiedHoldings;
     if (member.chart) {
       delete member.chart.dates;
       delete member.chart.benchmarkReturnPctSeries;
