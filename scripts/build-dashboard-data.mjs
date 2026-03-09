@@ -1374,8 +1374,12 @@ async function main() {
   };
 
   // Remove duplicated dates arrays from each member's chart (saves ~4.5MB)
+  // Remove benchmarkReturnPctSeries (frontend reads SPY directly, saves ~2.6MB)
   for (const member of dashboardData.members) {
-    if (member.chart) delete member.chart.dates;
+    if (member.chart) {
+      delete member.chart.dates;
+      delete member.chart.benchmarkReturnPctSeries;
+    }
   }
 
   // Compact JSON: round floats to 6 decimal places to shrink payload
