@@ -914,12 +914,14 @@ async function main() {
     }])
   );
 
-  // Fetch market caps for all unique tickers across all superinvestor portfolios
-  const allSuperTickers = [...new Set(
-    mergedSuperinvestorPortfolios.flatMap(p =>
+  // Fetch market caps for all unique tickers across all superinvestor portfolios + AVI positions
+  const aviTickers = trackedOpenPositions.map(row => row.ticker);
+  const allSuperTickers = [...new Set([
+    ...mergedSuperinvestorPortfolios.flatMap(p =>
       Object.values(p.quarters).flatMap(q => Object.keys(q))
-    )
-  )];
+    ),
+    ...aviTickers,
+  ])];
   console.log(`[MCAP] Fetching market caps for ${allSuperTickers.length} unique tickers...`);
   const marketCaps = await fetchMarketCaps(allSuperTickers);
   console.log(`[MCAP] Got market caps for ${Object.keys(marketCaps).length} tickers`);
@@ -1113,6 +1115,7 @@ async function main() {
       quantityUsed: row.quantityUsed,
       quantitySource: row.quantitySource,
       currentWeightPct: trackedOpenCurrentValueUsd ? displayValueUsd / trackedOpenCurrentValueUsd : null,
+      marketCap: marketCaps[row.ticker] ?? null,
       currentSnapshotQuantity: row.currentSnapshotQuantity,
       buyDate: row.buyDate,
       buyDateStatus: row.buyDateStatus,
@@ -1374,19 +1377,28 @@ async function main() {
 
   // Remove duplicated dates arrays from each member's chart (saves ~4.5MB)
   // Remove benchmarkReturnPctSeries (frontend reads SPY directly, saves ~2.6MB)
+  // Trim leading nulls from portfolio series (saves ~593KB, ~20%)
   for (const member of dashboardData.members) {
     if (member.chart) {
       delete member.chart.dates;
       delete member.chart.benchmarkReturnPctSeries;
       delete member.chart.portfolioLabel;
       delete member.chart.benchmarkLabel;
+      const series = member.chart.portfolioReturnPctSeries;
+      if (series) {
+        const startIdx = series.findIndex(v => v !== null);
+        if (startIdx > 0) {
+          member.chart.portfolioReturnPctSeries = series.slice(startIdx);
+          member.chart.chartStartIdx = startIdx;
+        }
+      }
     }
   }
 
-  // Compact JSON: round floats to 6 decimal places to shrink payload
+  // Compact JSON: round floats to 4 decimal places to shrink payload
   const replacer = (_key, value) =>
     typeof value === 'number' && !Number.isInteger(value)
-      ? Math.round(value * 1e6) / 1e6
+      ? Math.round(value * 1e4) / 1e4
       : value;
   await fs.writeFile(path.join(distDir, 'dashboard-data.json'), JSON.stringify(dashboardData, replacer));
 
