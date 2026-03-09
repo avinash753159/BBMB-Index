@@ -9,6 +9,21 @@ const root = process.cwd();
 const distDir = path.join(root, 'dist');
 const port = process.env.PORT || 4174;
 
+// Pre-compress large files at startup for faster serving
+const precompressed = new Map();
+async function precompress() {
+  const files = ['dashboard-data.json', 'pabrai_nav.json'];
+  for (const file of files) {
+    const filePath = path.join(distDir, file);
+    try {
+      const data = await fs.readFile(filePath);
+      const compressed = zlib.gzipSync(data, { level: 9 });
+      precompressed.set('/' + file, { data: compressed, raw: data });
+    } catch {}
+  }
+}
+await precompress();
+
 const contentTypes = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -36,7 +51,6 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
-    await fs.access(filePath);
     const ext = path.extname(filePath).toLowerCase();
     const ct = contentTypes[ext] ?? 'application/octet-stream';
     const acceptEncoding = request.headers['accept-encoding'] || '';
@@ -45,6 +59,21 @@ const server = http.createServer(async (request, response) => {
     const cacheControl = pathname.startsWith('/assets/')
       ? 'public, max-age=31536000, immutable'
       : 'public, max-age=300';
+
+    // Serve pre-compressed JSON if available
+    const pre = precompressed.get(pathname);
+    if (pre && acceptEncoding.includes('gzip')) {
+      response.writeHead(200, { 'content-type': ct, 'content-encoding': 'gzip', 'vary': 'Accept-Encoding', 'cache-control': cacheControl, 'content-length': pre.data.length });
+      response.end(pre.data);
+      return;
+    }
+    if (pre) {
+      response.writeHead(200, { 'content-type': ct, 'cache-control': cacheControl });
+      response.end(pre.raw);
+      return;
+    }
+
+    await fs.access(filePath);
 
     if (compressible.has(ext) && acceptEncoding.includes('gzip')) {
       response.writeHead(200, { 'content-type': ct, 'content-encoding': 'gzip', 'vary': 'Accept-Encoding', 'cache-control': cacheControl });
