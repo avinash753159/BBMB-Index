@@ -27,3 +27,5 @@ ac26fe1	94	100	100	100	keep	strip unused group, portfolioLabel, benchmarkLabel f
 b01c80b	98	100	100	100	keep	sortable columns on FilteredHoldingsTable (Ticker/Investor/Weight/MktCap/5yr)
 91a9ab1	92	100	100	100	keep	preload pabrai_nav.json alongside dashboard data
 fd1248f	98	100	100	100	keep	remove unused yearsBetween import, unexport internal helper
+3a7a9f8	96	100	100	100	keep	skip modulepreload for framer-motion (defer 131KB lazy chunk)
+4ef830c	94	100	100	100	keep	remove legacy app/ directory (1798 lines dead code)
