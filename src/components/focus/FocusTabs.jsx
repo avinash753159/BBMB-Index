@@ -33,7 +33,7 @@ export default function FocusTabs({ views, allSeries, selectedSeriesIds, onToggl
   const superSeries = allSeries.filter((item) => superIds.has(item.id));
 
   return (
-    <div className="space-y-2">
+    <nav aria-label="Series comparison" className="space-y-2">
       <div className="flex flex-wrap items-center gap-2">
         <Eyebrow className="mr-1">Compare</Eyebrow>
         {brosSeries.map((item) => {
@@ -100,6 +100,6 @@ export default function FocusTabs({ views, allSeries, selectedSeriesIds, onToggl
           })}
         </div>
       )}
-    </div>
+    </nav>
   );
 }
