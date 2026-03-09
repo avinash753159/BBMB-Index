@@ -1436,6 +1436,48 @@ async function main() {
     }
   }
 
+  // Downsample dates and chart series to every 3rd trading day (~weekly)
+  // to reduce payload size while maintaining chart visual fidelity
+  const STEP = 3;
+  const origDates = dashboardData.dates;
+  const keepIndices = [];
+  for (let i = 0; i < origDates.length; i += STEP) keepIndices.push(i);
+  // Always include the last date
+  if (keepIndices[keepIndices.length - 1] !== origDates.length - 1) {
+    keepIndices.push(origDates.length - 1);
+  }
+  dashboardData.dates = keepIndices.map(i => origDates[i]);
+
+  for (const member of dashboardData.members) {
+    if (member.chart?.portfolioReturnPctSeries) {
+      // Undo delta encoding first
+      const deltas = member.chart.portfolioReturnPctSeries;
+      const values = [deltas[0]];
+      for (let i = 1; i < deltas.length; i++) values.push(values[i - 1] + deltas[i]);
+
+      // Map from original index space to downsampled
+      const startIdx = member.chart.chartStartIdx ?? 0;
+      const sampledValues = keepIndices.map(origIdx => {
+        const seriesIdx = origIdx - startIdx;
+        if (seriesIdx < 0 || seriesIdx >= values.length) return null;
+        return values[seriesIdx];
+      });
+
+      // Find new startIdx and trim leading nulls
+      const newStart = sampledValues.findIndex(v => v !== null);
+      const trimmed = newStart > 0 ? sampledValues.slice(newStart) : sampledValues;
+      if (newStart > 0) member.chart.chartStartIdx = newStart;
+      else delete member.chart.chartStartIdx;
+
+      // Re-delta encode
+      const newDeltas = [trimmed[0]];
+      for (let i = 1; i < trimmed.length; i++) {
+        newDeltas.push(trimmed[i] - trimmed[i - 1]);
+      }
+      member.chart.portfolioReturnPctSeries = newDeltas;
+    }
+  }
+
   // Compact JSON: round floats to 4 decimal places to shrink payload
   const replacer = (_key, value) =>
     typeof value === 'number' && !Number.isInteger(value)
