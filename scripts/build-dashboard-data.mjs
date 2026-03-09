@@ -1372,7 +1372,12 @@ async function main() {
     group: groupData,
   };
 
-  await fs.writeFile(path.join(distDir, 'dashboard-data.json'), JSON.stringify(dashboardData, null, 2));
+  // Compact JSON: round floats to 6 decimal places to shrink payload
+  const replacer = (_key, value) =>
+    typeof value === 'number' && !Number.isInteger(value)
+      ? Math.round(value * 1e6) / 1e6
+      : value;
+  await fs.writeFile(path.join(distDir, 'dashboard-data.json'), JSON.stringify(dashboardData, replacer));
 
   await fs.copyFile(path.join(dataDir, 'pabrai_nav.json'), path.join(distDir, 'pabrai_nav.json'));
 
