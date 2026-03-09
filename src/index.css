@@ -3,9 +3,7 @@
 @theme {
   /* ── Background & Surface ── */
   --color-bg: #f7f6f3;
-  --color-bg-deep: #efeee9;
   --color-surface: #ffffff;
-  --color-surface-muted: rgba(247, 246, 243, 0.92);
   --color-surface-glass: rgba(255, 255, 255, 0.85);
   /* ── Text ── */
   --color-ink: #1a1b23;
@@ -14,7 +12,6 @@
 
   /* ── Borders & Dividers ── */
   --color-line: rgba(30, 41, 59, 0.1);
-  --color-line-strong: rgba(30, 41, 59, 0.2);
 
   /* ── Semantic Brand Colors ── */
   --color-matcha: #2d6a4f;
@@ -81,6 +78,22 @@
   cursor: pointer;
   border: 2px solid white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes bob-delayed {
+  0%, 100% { transform: translateY(0) rotate(-45deg); }
+  50% { transform: translateY(-4px) rotate(-45deg); }
+}
+.animate-bob {
+  animation: bob 2.5s ease-in-out infinite;
+}
+.animate-bob-delayed {
+  animation: bob-delayed 2.5s ease-in-out infinite;
+  animation-delay: 0.4s;
 }
 
 body {
