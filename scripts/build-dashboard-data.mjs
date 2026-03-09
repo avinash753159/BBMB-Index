@@ -1401,7 +1401,7 @@ async function main() {
     // Cap holdings at top 30 by weight to reduce JSON size
     if (member.holdings) {
       const sorted = [...member.holdings].sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
-      member.holdings = sorted.slice(0, 30).map(h => {
+      member.holdings = sorted.slice(0, 15).map(h => {
         const row = { t: h.ticker, w: h.weight };
         if (h.returnPct != null) row.r = h.returnPct;
         if (h.marketCap != null) row.m = h.marketCap;
