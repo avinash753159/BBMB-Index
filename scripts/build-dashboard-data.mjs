@@ -1360,22 +1360,9 @@ async function main() {
 
   const dashboardData = {
     metadata: {
-      title: 'Boba Bonh Mi Bros',
-      subtitle: 'Inverse boba index workbench',
-      generatedAt: new Date().toISOString(),
       windowStart: globalWindowStart,
       windowEnd,
-      asOf: '2026-03-05',
-      benchmarkSymbol,
       benchmarkName: 'SPDR S&P 500 ETF Trust',
-      chartDeltaEncoded: true,
-      sources: [
-        'User-provided Vanguard holdings snapshot as of March 5, 2026, 4:15 p.m. ET',
-        'User-provided remembered entries and exits for AVI',
-        'Q4 2025 Morgan Stanley Micron statement pasted by the user',
-        'Yahoo Finance chart API for 5-year daily price history and TRYUSD conversion',
-        'Pabrai Funds PDFs supplied by the user, extracted into NAV checkpoints through December 31, 2025',
-      ],
     },
     dates: baseDates,
     members: [memberData, ...externalMembers, ...pendingMembers],
@@ -1394,6 +1381,9 @@ async function main() {
     delete member.currentUnclassifiedHoldings;
     delete member.strategyNote;
     delete member.sourcePdfs;
+    delete member.benchmarkSymbol;
+    delete member.windowStart;
+    delete member.windowEnd;
     // Strip verbose description for superinvestors (client has fallback text)
     if (member.strategyType === 'superinvestor') delete member.description;
     // Strip null fields from holdings and shorten keys to reduce payload
