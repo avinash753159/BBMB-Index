@@ -37,3 +37,13 @@ c4f981b	75	100	100	100	keep	reduce numeric precision 6→4 decimal places (2323K
 315bf3f	76	100	100	100	keep	encode chart series as scaled integers (1829KB→1527KB, 16.5%)
 203cddf	71	100	100	100	keep	remove unused CSS theme vars (bg-deep, surface-muted, line-strong)
 dc30b06	75	100	100	100	keep	strip verbose description from superinvestor members (15KB)
+15624ba	79	100	100	100	keep	delta-encode chart series (1690KB -> 1340KB, 21%)
+d9b1521	79	100	100	100	keep	add inline loading skeleton for faster perceived load
+a2e6a6d	77	100	100	100	discard	add min-height to main to reduce CLS (perf dropped)
+a2e6a6d	80	100	100	100	keep	strip null marketCap/returnPct from holdings data
+ab6640a	80	100	100	100	keep	add cache-control headers for hashed assets
+bbd5442	80	100	100	100	keep	global delta flag, simplify unpackSeries
+5b17591	80	100	100	100	keep	remove 74 stale dist/assets files
+ca4e6f4	79	100	100	100	discard	compress dates to integer day-offsets (perf dropped)
+ca4e6f4	79	100	100	100	discard	strip unused metadata fields (perf dropped)
+ca4e6f4	75	100	100	100	discard	non-lazy AnnualizedStrip (perf dropped 80->75)
