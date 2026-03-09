@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { formatDate } from '../lib/formatters';
-import { yearsBetween, annualizeReturn, latestNonNull, interpolateSeriesValue } from '../lib/series';
+import { annualizeReturn, latestNonNull, interpolateSeriesValue } from '../lib/series';
 
 function buildPifSeries(pabraiNav, dates, windowStart, windowEnd) {
   if (!pabraiNav?.funds || !dates?.length) return [];

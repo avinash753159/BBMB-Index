@@ -1,4 +1,4 @@
-export function yearsBetween(startDate, endDate) {
+function yearsBetween(startDate, endDate) {
   if (!startDate || !endDate) return null;
   const start = Date.parse(`${startDate}T00:00:00Z`);
   const end = Date.parse(`${endDate}T00:00:00Z`);
