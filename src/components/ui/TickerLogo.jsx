@@ -9,14 +9,14 @@ const TICKER_STYLES = {
   PLTR: { bg: '#1a1a2e', text: '#fff', label: 'PLT' },
   FOUR: { bg: '#6a1b9a', text: '#fff', label: '4' },
   AAPL: { bg: '#555555', text: '#fff', label: 'APL' },
-  GOOGL: { bg: '#4285f4', text: '#fff', label: 'GOG' },
-  GOOG: { bg: '#4285f4', text: '#fff', label: 'GOG' },
+  GOOGL: { bg: '#2b6cc4', text: '#fff', label: 'GOG' },
+  GOOG: { bg: '#2b6cc4', text: '#fff', label: 'GOG' },
   BAC: { bg: '#012169', text: '#fff', label: 'BAC' },
   PDD: { bg: '#e02e24', text: '#fff', label: 'PDD' },
   EWBC: { bg: '#b71c1c', text: '#fff', label: 'EWB' },
   CROX: { bg: '#007a33', text: '#fff', label: 'CRX' },
   AXP: { bg: '#006fcf', text: '#fff', label: 'AXP' },
-  KO: { bg: '#f40009', text: '#fff', label: 'KO' },
+  KO: { bg: '#c50007', text: '#fff', label: 'KO' },
   CVX: { bg: '#0066b2', text: '#fff', label: 'CVX' },
   MCO: { bg: '#002d72', text: '#fff', label: 'MCO' },
   CB: { bg: '#003b5c', text: '#fff', label: 'CB' },
@@ -61,6 +61,7 @@ export default function TickerLogo({ ticker }) {
     <span
       className="flex h-6 w-6 flex-none items-center justify-center rounded-md text-[0.5625rem] font-bold leading-none"
       style={{ backgroundColor: bg, color: text }}
+      aria-hidden="true"
     >
       {label.slice(0, 3)}
     </span>

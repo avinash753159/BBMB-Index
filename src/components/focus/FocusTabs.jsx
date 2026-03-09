@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import Eyebrow from '../ui/Eyebrow';
 import SeriesAvatar from '../ui/SeriesAvatar';
+
+const TOP_COUNT = 5;
 
 function FilterChip({ on, dimmed, matchInfo, onClick, children }) {
   return (
@@ -23,39 +26,50 @@ function FilterChip({ on, dimmed, matchInfo, onClick, children }) {
 }
 
 export default function FocusTabs({ views, allSeries, selectedSeriesIds, onToggle, onSetSeries, activeView, onViewChange, maxDisplay = 5 }) {
-  const superIds = new Set(
-    allSeries.filter(item => {
-      const view = views.find(v => v.id === item.id);
-      return view?.kind === 'superinvestor';
-    }).map(item => item.id)
-  );
-  const brosSeries = allSeries.filter((item) => !superIds.has(item.id));
-  const superSeries = allSeries.filter((item) => superIds.has(item.id));
+  const [superExpanded, setSuperExpanded] = useState(false);
+
+  const compareSeries = allSeries.filter(item => item.category === 'compare');
+  const brosSeries = allSeries.filter(item => item.category === 'bros');
+  const superSeries = allSeries.filter(item => item.category === 'superinvestors');
+
+  const visibleSuper = superExpanded ? superSeries : superSeries.slice(0, TOP_COUNT);
+  const hiddenCount = superSeries.length - TOP_COUNT;
+
+  const renderChips = (series) =>
+    series.map((item) => {
+      const isOn = selectedSeriesIds.includes(item.id);
+      return (
+        <FilterChip
+          key={item.id}
+          on={isOn}
+          dimmed={item.dimmed}
+          matchInfo={item.matchCount}
+          onClick={() => {
+            onToggle(item.id);
+            const hasView = views.some((v) => v.id === item.id);
+            if (hasView) onViewChange(item.id);
+          }}
+        >
+          <SeriesAvatar id={item.id} size="xs" />
+          {item.label}
+        </FilterChip>
+      );
+    });
 
   return (
     <nav aria-label="Series comparison" className="space-y-2">
-      <div className="flex flex-wrap items-center gap-2">
-        <Eyebrow className="mr-1">Compare</Eyebrow>
-        {brosSeries.map((item) => {
-          const isOn = selectedSeriesIds.includes(item.id);
-          return (
-            <FilterChip
-              key={item.id}
-              on={isOn}
-              dimmed={item.dimmed}
-              matchInfo={item.matchCount}
-              onClick={() => {
-                onToggle(item.id);
-                const hasView = views.some((v) => v.id === item.id);
-                if (hasView) onViewChange(item.id);
-              }}
-            >
-              <SeriesAvatar id={item.id} size="xs" />
-              {item.label}
-            </FilterChip>
-          );
-        })}
-      </div>
+      {compareSeries.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <Eyebrow className="mr-1">Compare</Eyebrow>
+          {renderChips(compareSeries)}
+        </div>
+      )}
+      {brosSeries.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <Eyebrow className="mr-1">Bond Me Bros</Eyebrow>
+          {renderChips(brosSeries)}
+        </div>
+      )}
       {superSeries.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
           <Eyebrow className="mr-1">Superinvestors</Eyebrow>
@@ -65,7 +79,7 @@ export default function FocusTabs({ views, allSeries, selectedSeriesIds, onToggl
               const allSuperIds = superSeries.filter((s) => !s.dimmed).map((s) => s.id);
               const allOn = allSuperIds.every((id) => selectedSeriesIds.includes(id));
               if (allOn) {
-                const nonSuper = selectedSeriesIds.filter((id) => !superIds.has(id));
+                const nonSuper = selectedSeriesIds.filter((id) => !superSeries.some(s => s.id === id));
                 onSetSeries(nonSuper.length ? nonSuper : ['SPY']);
               } else {
                 onSetSeries([...new Set(['SPY', ...selectedSeriesIds, ...allSuperIds])]);
@@ -79,25 +93,26 @@ export default function FocusTabs({ views, allSeries, selectedSeriesIds, onToggl
           >
             All
           </button>
-          {superSeries.map((item) => {
-            const isOn = selectedSeriesIds.includes(item.id);
-            return (
-              <FilterChip
-                key={item.id}
-                on={isOn}
-                dimmed={item.dimmed}
-                matchInfo={item.matchCount}
-                onClick={() => {
-                  onToggle(item.id);
-                  const hasView = views.some((v) => v.id === item.id);
-                  if (hasView) onViewChange(item.id);
-                }}
+          {renderChips(visibleSuper)}
+          {hiddenCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setSuperExpanded(!superExpanded)}
+              className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-muted transition-all duration-150 hover:border-ink hover:text-ink hover:shadow-sm"
+            >
+              {superExpanded ? 'Show less' : `+${hiddenCount} more`}
+              <svg
+                className={`h-3 w-3 transition-transform duration-200 ${superExpanded ? 'rotate-180' : ''}`}
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
               >
-                <SeriesAvatar id={item.id} size="xs" />
-                {item.label}
-              </FilterChip>
-            );
-          })}
+                <path d="M3 5l3 3 3-3" />
+              </svg>
+            </button>
+          )}
         </div>
       )}
     </nav>

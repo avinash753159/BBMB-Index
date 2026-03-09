@@ -105,10 +105,29 @@ export default function YearlyBarChart({ selectedSeries, dates, onActivateView }
     return zeroY - (v / maxAbs) * (barAreaHeight / 2);
   }
 
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <GlassCard className="p-6">
-      <Eyebrow>Year-by-year</Eyebrow>
+      <button
+        type="button"
+        onClick={() => setExpanded(!expanded)}
+        className="flex w-full cursor-pointer items-center justify-between"
+      >
+        <Eyebrow>Year-by-year</Eyebrow>
+        <svg
+          className={`h-4 w-4 text-muted transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        >
+          <path d="M4 6l4 4 4-4" />
+        </svg>
+      </button>
 
+      {expanded && <>
       <div className="mt-3 overflow-x-auto rounded-2xl bg-bg/60 p-3">
         <svg
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
@@ -271,6 +290,7 @@ export default function YearlyBarChart({ selectedSeries, dates, onActivateView }
           </div>
         ))}
       </div>
+      </>}
     </GlassCard>
   );
 }

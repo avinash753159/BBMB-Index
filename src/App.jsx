@@ -12,6 +12,7 @@ const PerformanceChart = lazy(() => import('./components/chart/PerformanceChart'
 const YearlyBarChart = lazy(() => import('./components/chart/YearlyBarChart'));
 const DetailRouter = lazy(() => import('./components/detail/DetailRouter'));
 const FilteredHoldingsTable = lazy(() => import('./components/detail/FilteredHoldingsTable'));
+const TopHoldingsCards = lazy(() => import('./components/detail/TopHoldingsCards'));
 
 const MAX_DISPLAY = 5;
 
@@ -50,52 +51,10 @@ export default function App() {
     }
   }, [model, initialized]);
 
-  const selectedSeries = useMemo(() => {
+  const windowedDates = useMemo(() => {
     if (!model) return [];
-    return selectedSeriesIds.map((id) => model.seriesById[id]).filter(Boolean);
-  }, [model, selectedSeriesIds]);
-
-  // Re-normalize series from the slider's start index
-  const { windowedDates, windowedSeries } = useMemo(() => {
-    if (!model || !selectedSeries.length) return { windowedDates: [], windowedSeries: [] };
-    const startIdx = rangeStartIdx;
-    const trimmedDates = model.dates.slice(startIdx);
-    const wStart = trimmedDates[0];
-    const wEnd = trimmedDates[trimmedDates.length - 1];
-
-    const trimmedSeries = selectedSeries.map((s) => {
-      const trimmed = s.returnPctSeries.slice(startIdx);
-      const baseIdx = trimmed.findIndex((v) => v != null);
-      if (baseIdx === -1) return { ...s, returnPctSeries: trimmed, totalReturnPct: null, annualizedReturnPct: null };
-      const baseVal = 1 + trimmed[baseIdx];
-      const renormalized = trimmed.map((v) => {
-        if (v == null) return null;
-        return ((1 + v) / baseVal) - 1;
-      });
-      const totalReturnPct = latestNonNull(renormalized);
-      const firstDataDate = trimmedDates[baseIdx];
-      const annualized = annualizeReturn(totalReturnPct, firstDataDate, wEnd);
-      return { ...s, returnPctSeries: renormalized, totalReturnPct, annualizedReturnPct: annualized };
-    });
-
-    // Sort: SPY first, then by annualized return descending
-    trimmedSeries.sort((a, b) => {
-      if (a.kind === 'benchmark') return -1;
-      if (b.kind === 'benchmark') return 1;
-      const aRet = a.annualizedReturnPct ?? -Infinity;
-      const bRet = b.annualizedReturnPct ?? -Infinity;
-      return bRet - aRet;
-    });
-
-    return { windowedDates: trimmedDates, windowedSeries: trimmedSeries };
-  }, [model, selectedSeries, rangeStartIdx]);
-
-  // Display only the top performers (SPY + top N-1 by annualized return)
-  const displaySeries = useMemo(() => {
-    if (!windowedSeries.length) return [];
-    // windowedSeries is already sorted: SPY first, then by annualized desc
-    return windowedSeries.slice(0, MAX_DISPLAY);
-  }, [windowedSeries]);
+    return model.dates.slice(rangeStartIdx);
+  }, [model, rangeStartIdx]);
 
   const { filteredSeriesIds, holdingsMatchCounts } = useMemo(() => {
     if (!model) return { filteredSeriesIds: new Set(), holdingsMatchCounts: {} };
@@ -122,29 +81,89 @@ export default function App() {
 
   const allToggleSeries = useMemo(() => {
     if (!model) return [];
-    const chartSeries = model.comparisonSeries.map((s) => ({
-      id: s.id,
-      label: s.shortLabel ?? s.label,
-      kind: s.kind,
-      dimmed: !filteredSeriesIds.has(s.id),
-      matchCount: holdingsMatchCounts[s.id] ?? null,
-      annualizedReturnPct: s.annualizedReturnPct,
-    }));
+    const startIdx = rangeStartIdx;
+    const trimmedDates = model.dates.slice(startIdx);
+    const wEnd = trimmedDates[trimmedDates.length - 1];
+
+    const chartSeries = model.comparisonSeries.map((s) => {
+      const trimmed = s.returnPctSeries.slice(startIdx);
+      const baseIdx = trimmed.findIndex((v) => v != null);
+      let windowedAnnualized = s.annualizedReturnPct;
+      if (baseIdx !== -1) {
+        const baseVal = 1 + trimmed[baseIdx];
+        const renormalized = trimmed.map((v) => v == null ? null : ((1 + v) / baseVal) - 1);
+        const totalReturn = latestNonNull(renormalized);
+        const firstDataDate = trimmedDates[baseIdx];
+        windowedAnnualized = annualizeReturn(totalReturn, firstDataDate, wEnd);
+      }
+      return {
+        id: s.id,
+        label: s.shortLabel ?? s.label,
+        kind: s.kind,
+        category: s.category,
+        dimmed: !filteredSeriesIds.has(s.id),
+        matchCount: holdingsMatchCounts[s.id] ?? null,
+        annualizedReturnPct: windowedAnnualized,
+      };
+    });
     const pendingIds = new Set(chartSeries.map((s) => s.id));
     const pendingViews = model.views
       .filter((v) => v.kind === 'pending' && !pendingIds.has(v.id))
-      .map((v) => ({ id: v.id, label: v.label, kind: 'pending', dimmed: false, matchCount: null, annualizedReturnPct: null }));
-    // Sort: SPY first (benchmark), then by annualized return descending
+      .map((v) => ({ id: v.id, label: v.label, kind: 'pending', category: 'bros', dimmed: false, matchCount: null, annualizedReturnPct: null }));
     const all = [...chartSeries, ...pendingViews];
     all.sort((a, b) => {
-      if (a.kind === 'benchmark') return -1;
-      if (b.kind === 'benchmark') return 1;
       const aRet = a.annualizedReturnPct ?? -Infinity;
       const bRet = b.annualizedReturnPct ?? -Infinity;
       return bRet - aRet;
     });
     return all;
-  }, [model, filteredSeriesIds, holdingsMatchCounts]);
+  }, [model, filteredSeriesIds, holdingsMatchCounts, rangeStartIdx]);
+
+  // Build effective ids: user selections first, then auto-fill remaining slots with top superinvestors
+  const effectiveIds = useMemo(() => {
+    // Always include SPY + whatever the user explicitly selected
+    const picked = new Set(['SPY', ...selectedSeriesIds]);
+    // Fill remaining slots with top superinvestors
+    const remaining = MAX_DISPLAY - picked.size;
+    if (remaining > 0) {
+      const topSuper = allToggleSeries
+        .filter((s) => s.category === 'superinvestors' && !s.dimmed && !picked.has(s.id))
+        .slice(0, remaining)
+        .map((s) => s.id);
+      topSuper.forEach((id) => picked.add(id));
+    }
+    return [...picked];
+  }, [allToggleSeries, selectedSeriesIds]);
+
+  // Re-derive display series from effective ids
+  const displaySeries = useMemo(() => {
+    if (!model) return [];
+    const startIdx = rangeStartIdx;
+    const trimmedDates = model.dates.slice(startIdx);
+    const wEnd = trimmedDates[trimmedDates.length - 1];
+
+    const series = effectiveIds
+      .map((id) => model.seriesById[id])
+      .filter(Boolean)
+      .map((s) => {
+        const trimmed = s.returnPctSeries.slice(startIdx);
+        const baseIdx = trimmed.findIndex((v) => v != null);
+        if (baseIdx === -1) return { ...s, returnPctSeries: trimmed, totalReturnPct: null, annualizedReturnPct: null };
+        const baseVal = 1 + trimmed[baseIdx];
+        const renormalized = trimmed.map((v) => v == null ? null : ((1 + v) / baseVal) - 1);
+        const totalReturnPct = latestNonNull(renormalized);
+        const firstDataDate = trimmedDates[baseIdx];
+        const annualized = annualizeReturn(totalReturnPct, firstDataDate, wEnd);
+        return { ...s, returnPctSeries: renormalized, totalReturnPct, annualizedReturnPct: annualized };
+      });
+
+    series.sort((a, b) => {
+      if (a.kind === 'benchmark') return -1;
+      if (b.kind === 'benchmark') return 1;
+      return (b.annualizedReturnPct ?? -Infinity) - (a.annualizedReturnPct ?? -Infinity);
+    });
+    return series.slice(0, MAX_DISPLAY);
+  }, [model, effectiveIds, rangeStartIdx]);
 
   const activeViewObj = useMemo(() => {
     if (!model) return null;
@@ -243,6 +262,7 @@ export default function App() {
             windowStart={windowedDates[0] ?? model.windowStart}
             windowEnd={model.windowEnd}
           />
+          <TopHoldingsCards displaySeries={displaySeries} seriesById={model.seriesById} />
           <YearlyBarChart
             selectedSeries={displaySeries}
             dates={windowedDates}

@@ -38,7 +38,7 @@ export default function SuperinvestorDetail({ view, onSetSeries, capMax }) {
               {dataromaUrl && (
                 <>
                   {' '}
-                  <a href={dataromaUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                  <a href={dataromaUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                     View on Dataroma &rarr;
                   </a>
                 </>
