@@ -1398,8 +1398,10 @@ async function main() {
     }
     // Strip null fields from holdings and shorten keys to reduce payload
     // t=ticker, w=weight, r=returnPct, m=marketCap
+    // Cap holdings at top 30 by weight to reduce JSON size
     if (member.holdings) {
-      member.holdings = member.holdings.map(h => {
+      const sorted = [...member.holdings].sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
+      member.holdings = sorted.slice(0, 30).map(h => {
         const row = { t: h.ticker, w: h.weight };
         if (h.returnPct != null) row.r = h.returnPct;
         if (h.marketCap != null) row.m = h.marketCap;
