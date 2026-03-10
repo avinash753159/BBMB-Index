@@ -1,11 +1,17 @@
-﻿member,ticker,buy_date,buy_date_status,buy_price,buy_currency,amount_invested_usd,fx_rate_usd_to_local,amount_invested_local,estimated_shares,sell_date,sell_date_status,sell_price,sell_currency,position_status,confidence,notes
-AVI,BABA,2020-03-15,estimated,190.00,USD,124013.38,,,652.7020,,,,,open,medium,"Price match is strongest around March 2020. Current Vanguard quantity of 652.702 shares is now treated as the canonical lot size for the model, which implies a basis near 124013.38 at the remembered 190 entry."
-AVI,SOC,2025-11-15,estimated,4.20,USD,43974.00,,,10470.0000,,,,,open,medium,"November 2025 is the closest monthly match; December 2025 average was materially higher. The model now treats the March 5, 2026 Vanguard quantity of 10470 shares as the canonical lot size, which implies a basis near 43974.00 at the remembered 4.20 entry."
-AVI,OXY,2025-05-15,estimated,40.00,USD,20000,,,500.0000,,,,,open,medium,"May 2025 is the closest monthly match to a $40 entry. Vanguard shows 492 current shares as of March 5, 2026, which is close to the implied 500-share estimate."
-AVI,CHGG,2025-05-15,estimated,1.00,USD,1000,,,1000.0000,,,,,open,medium,"Assumes CHEGG means CHGG. May 2025 is the closest monthly match to a $1 entry. Vanguard shows 1000 current shares as of March 5, 2026, which matches the implied estimate."
-AVI,DIDIY,2021-09-28,estimated,8.00,USD,20000,,,2500.0000,,,,,open,high,"User added DIDIY at about $8 for $20k. March 2021 would be before the company was public, so the date is estimated to the nearest $8 close on September 28, 2021. Vanguard shows 2500 current shares as of March 5, 2026, which matches the implied estimate exactly."
-AVI,BRK.B,2021-03-15,estimated,255.47,USD,27590.76,,,108.0000,,,,,open,medium,"Date estimated from 'about 5 years ago' relative to March 6, 2026. Entry price uses the March 2021 monthly average because no price was provided. Current Vanguard quantity of 108 shares is now treated as the canonical lot size for the model, which implies a basis near 27590.76 at that entry."
-AVI,MU,2020-11-15,estimated,60.00,USD,108007.20,,,1800.1200,2025-11-06,confirmed,240.0182,USD,sold,medium,"Micron assumed as MU. User remembered roughly a $60 entry around five years earlier. Q4 2025 Morgan Stanley statement confirms a full 1,800.12-share exit on November 6, 2025 at an average sale price of about $240.0182."
-AVI,PLTR,2020-09-30,estimated,9.50,USD,40000,,,4210.5263,2025-01-07,estimated,70.00,USD,sold,medium,"User said the position was opened near the IPO with about $40k and sold around $70. Buy shares are inferred from a $40k buy at the September 30, 2020 close of $9.50. Sale date is estimated to the nearest historical close to $70 on January 7, 2025. Vanguard also shows a separate current 104-share PLTR holding in the Roth IRA as of March 5, 2026."
-
-
+member,ticker,buy_date,buy_date_status,buy_price,buy_currency,amount_invested_usd,fx_rate_usd_to_local,amount_invested_local,estimated_shares,sell_date,sell_date_status,sell_price,sell_currency,position_status,confidence,notes
+AVI,BND,2017-07-17,confirmed,87.62,USD,46665.19,,,41.013,,,,,open,,
+AVI,BABA,2021-06-28,confirmed,118.04,USD,112610.1,,,619,,,,,open,,
+AVI,DIDIY,2021-07-28,confirmed,8.82,USD,22038.75,,,2500,,,,,open,,
+AVI,MRNA,2020-10-26,confirmed,70.3,USD,6116.1,,,87,2022-03-01,confirmed,156,USD,sold,,
+AVI,SPY,2020-04-22,confirmed,279.61,USD,5111.61,,,18.281,2021-06-28,confirmed,427.13,USD,sold,,
+AVI,VOO,2017-07-17,confirmed,227.65,USD,10732.11,,,47.142,2021-07-27,confirmed,404.45,USD,sold,,
+AVI,VHT,2017-07-17,confirmed,151.15,USD,5619.15,,,37.176,2021-07-27,confirmed,253.12,USD,sold,,
+AVI,VNQ,2020-04-22,confirmed,73.44,USD,2060.62,,,28.059,2021-06-28,confirmed,103.15,USD,sold,,
+AVI,IYT,2020-04-22,confirmed,144.7,USD,2046.75,,,14.145,2021-06-28,confirmed,261.11,USD,sold,,
+AVI,VDE,2017-07-17,confirmed,49.25,USD,10553.62,,,214.276,2021-06-28,confirmed,77.7,USD,sold,,
+AVI,VXUS,2020-04-22,confirmed,44.09,USD,5279.82,,,119.76,2021-06-28,confirmed,66.26,USD,sold,,
+AVI,XLY,2020-04-22,confirmed,110.46,USD,1003.62,,,9.086,2021-06-28,confirmed,177.95,USD,sold,,
+AVI,SIXG,2020-04-22,confirmed,24.19,USD,5202.18,,,215.091,2021-06-28,confirmed,37.8,USD,sold,,
+AVI,PLTR,2020-09-30,confirmed,10.42,USD,39184.37,,,3759,,,,,open,,
+AVI,CCL,2020-04-22,confirmed,12.08,USD,20366.88,,,1686,,,,,open,,
+AVI,BRK.B,2020-04-22,confirmed,186.46,USD,20137.68,,,108,,,,,open,,
