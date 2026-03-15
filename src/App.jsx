@@ -18,7 +18,10 @@ const MAX_DISPLAY = 5;
 
 function sanitizeSelection(ids, model) {
   if (!model) return ['SPY'];
-  const validIds = new Set(model.comparisonSeries.map((s) => s.id));
+  const validIds = new Set([
+    ...model.comparisonSeries.map((s) => s.id),
+    ...model.views.map((v) => v.id),
+  ]);
   const unique = [];
   ids.forEach((id) => {
     if (validIds.has(id) && !unique.includes(id)) unique.push(id);
@@ -109,7 +112,7 @@ export default function App() {
     const pendingIds = new Set(chartSeries.map((s) => s.id));
     const pendingViews = model.views
       .filter((v) => v.kind === 'pending' && !pendingIds.has(v.id))
-      .map((v) => ({ id: v.id, label: v.label, kind: 'pending', category: 'bros', dimmed: false, matchCount: null, annualizedReturnPct: null }));
+      .map((v) => ({ id: v.id, label: v.label, kind: 'pending', category: v.category ?? 'bros', dimmed: false, matchCount: null, annualizedReturnPct: null }));
     const all = [...chartSeries, ...pendingViews];
     all.sort((a, b) => {
       const aRet = a.annualizedReturnPct ?? -Infinity;
@@ -119,21 +122,10 @@ export default function App() {
     return all;
   }, [model, filteredSeriesIds, holdingsMatchCounts, rangeStartIdx]);
 
-  // Build effective ids: user selections first, then auto-fill remaining slots with top superinvestors
+  // Effective ids = exactly what the user selected (no auto-fill)
   const effectiveIds = useMemo(() => {
-    // Always include SPY + whatever the user explicitly selected
-    const picked = new Set(['SPY', ...selectedSeriesIds]);
-    // Fill remaining slots with top superinvestors
-    const remaining = MAX_DISPLAY - picked.size;
-    if (remaining > 0) {
-      const topSuper = allToggleSeries
-        .filter((s) => s.category === 'superinvestors' && !s.dimmed && !picked.has(s.id))
-        .slice(0, remaining)
-        .map((s) => s.id);
-      topSuper.forEach((id) => picked.add(id));
-    }
-    return [...picked];
-  }, [allToggleSeries, selectedSeriesIds]);
+    return [...new Set(['SPY', ...selectedSeriesIds])];
+  }, [selectedSeriesIds]);
 
   // Re-derive display series from effective ids
   const displaySeries = useMemo(() => {
@@ -148,14 +140,15 @@ export default function App() {
       .map((s) => {
         const trimmed = s.returnPctSeries.slice(startIdx);
         const baseIdx = trimmed.findIndex((v) => v != null);
-        if (baseIdx === -1) return { ...s, returnPctSeries: trimmed, totalReturnPct: null, annualizedReturnPct: null };
+        if (baseIdx === -1) return null; // no data in this window — hide the series
         const baseVal = 1 + trimmed[baseIdx];
         const renormalized = trimmed.map((v) => v == null ? null : ((1 + v) / baseVal) - 1);
         const totalReturnPct = latestNonNull(renormalized);
         const firstDataDate = trimmedDates[baseIdx];
         const annualized = annualizeReturn(totalReturnPct, firstDataDate, wEnd);
         return { ...s, returnPctSeries: renormalized, totalReturnPct, annualizedReturnPct: annualized };
-      });
+      })
+      .filter(Boolean);
 
     series.sort((a, b) => {
       if (a.kind === 'benchmark') return -1;
@@ -248,13 +241,15 @@ export default function App() {
         maxDisplay={MAX_DISPLAY}
       />
       <main id="dashboard-main" className="space-y-6">
+        <Suspense fallback={null}>
+          <AnnualizedStrip selectedSeries={displaySeries} />
+        </Suspense>
         <TimeRangeSlider
           dates={model.dates}
           startIdx={rangeStartIdx}
           onChange={setRangeStartIdx}
         />
         <Suspense fallback={null}>
-          <AnnualizedStrip selectedSeries={displaySeries} />
           <PerformanceChart
             selectedSeries={displaySeries}
             dates={windowedDates}

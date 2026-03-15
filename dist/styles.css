@@ -774,8 +774,8 @@ button:focus-visible {
 
 @media (max-width: 760px) {
   .page-shell {
-    width: min(100vw - 24px, 1380px);
-    padding-top: 20px;
+    width: min(100vw - 16px, 1380px);
+    padding-top: 16px;
   }
 
   .hero-copy,
@@ -788,8 +788,8 @@ button:focus-visible {
   .callout-card,
   .loading-card,
   .empty-card {
-    border-radius: 22px;
-    padding: 18px;
+    border-radius: 18px;
+    padding: 14px;
   }
 
   .brand-row {
@@ -797,7 +797,7 @@ button:focus-visible {
   }
 
   .brand-mark {
-    width: 108px;
+    width: 80px;
   }
 
   .annualized-grid,
@@ -807,7 +807,68 @@ button:focus-visible {
     grid-template-columns: 1fr;
   }
 
+  .chart-wrap {
+    padding: 8px;
+    border-radius: 16px;
+  }
+
   .chart-wrap svg {
-    min-width: 760px;
+    min-width: 500px;
+  }
+
+  .focus-strip {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .compare-lab {
+    padding: 14px;
+    gap: 14px;
+  }
+
+  .hero {
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+  }
+
+  .annualized-card strong {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+  }
+
+  .table-card table {
+    font-size: 0.85rem;
+  }
+
+  .table-card th,
+  .table-card td {
+    padding: 8px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-wrap svg {
+    min-width: 400px;
+  }
+
+  .brand-mark {
+    width: 64px;
+  }
+
+  .hero-copy,
+  .focus-strip,
+  .compare-lab,
+  .annualized-shell,
+  .chart-shell,
+  .detail-card,
+  .table-card,
+  .callout-card,
+  .loading-card,
+  .empty-card {
+    border-radius: 14px;
+    padding: 12px;
   }
 }

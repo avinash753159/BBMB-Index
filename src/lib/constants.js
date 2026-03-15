@@ -26,6 +26,8 @@ export const SERIES_RAW_COLORS = {
   LI_LU: '#1a5276',
   BUFFETT: '#7d3c98',
   NORBERT: '#2e7d32',
+  NEIL_MEHTA: '#8e6c3e',
+  PELOSI: '#2e5090',
 };
 
 export const SERIES_KIND_LABELS = {
@@ -41,6 +43,8 @@ export const SERIES_KIND_LABELS = {
   LI_LU: 'Superinvestor',
   BUFFETT: 'Superinvestor',
   NORBERT: 'Superinvestor',
+  NEIL_MEHTA: 'Superinvestor',
+  PELOSI: 'Superinvestor',
 };
 
 function hashColor(id) {

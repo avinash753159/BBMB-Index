@@ -30,6 +30,7 @@ export default function FocusTabs({ views, allSeries, selectedSeriesIds, onToggl
 
   const compareSeries = allSeries.filter(item => item.category === 'compare');
   const brosSeries = allSeries.filter(item => item.category === 'bros');
+  const otherSeries = allSeries.filter(item => item.category === 'other');
   const superSeries = allSeries.filter(item => item.category === 'superinvestors');
 
   const visibleSuper = superExpanded ? superSeries : superSeries.slice(0, TOP_COUNT);
@@ -57,7 +58,7 @@ export default function FocusTabs({ views, allSeries, selectedSeriesIds, onToggl
     });
 
   return (
-    <nav aria-label="Series comparison" className="space-y-2">
+    <nav aria-label="Series comparison" className="space-y-2 max-sm:space-y-3">
       {compareSeries.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
           <Eyebrow className="mr-1">Compare</Eyebrow>
@@ -68,6 +69,12 @@ export default function FocusTabs({ views, allSeries, selectedSeriesIds, onToggl
         <div className="flex flex-wrap items-center gap-2">
           <Eyebrow className="mr-1">Boba Banh Mi Bros</Eyebrow>
           {renderChips(brosSeries)}
+        </div>
+      )}
+      {otherSeries.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <Eyebrow className="mr-1">Other</Eyebrow>
+          {renderChips(otherSeries)}
         </div>
       )}
       {superSeries.length > 0 && (

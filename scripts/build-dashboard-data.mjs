@@ -18,6 +18,9 @@ const roughMembers = {
   PRAB: { label: 'PRAB', status: 'pending', roughSymbols: ['FOUR', 'OXY'] },
 };
 
+// "Other" category — no more pending members
+const otherMembers = {};
+
 const singleTickerMembers = [
   { id: 'WAGN', label: 'WAGN', ticker: 'WAGN', description: 'WAGN stock performance over the five-year window.' },
 ];
@@ -172,6 +175,59 @@ const superinvestorPortfolios = [
       '2025-12-31': { 'BRK.A': 36.38, SGOV: 18.88, CROX: 16.90, PDD: 15.64, PYPL: 12.20 },
     },
   },
+  {
+    id: 'NEIL_MEHTA',
+    label: 'Neil Mehta',
+    shortLabel: 'Mehta',
+    source: 'Greenoaks Capital Partners 13F quarterly filings via SEC EDGAR (CIK 0001840735)',
+    managerId: null,
+    category: 'other',
+    quarters: {
+      '2020-12-31': { SE: 87.5, Z: 3.9, NYT: 2.6, GWRE: 1.9, UPWK: 1.4, GDRX: 0.9, SMAR: 0.8, CDAY: 0.7, DASH: 0.1, ABNB: 0.1 },
+      '2021-03-31': { CPNG: 93.7, CLOV: 4.9, SE: 1.1, Z: 0.1, SMAR: 0.0, NYT: 0.0, GDRX: 0.0, GWRE: 0.0, UPWK: 0.0 },
+      '2021-06-30': { CPNG: 88.4, CLOV: 9.7, SE: 1.6, Z: 0.1, NYT: 0.0, SMAR: 0.0, UPWK: 0.0, SNOW: 0.0, S: 0.0, GDRX: 0.0, GWRE: 0.0, MNDY: 0.0 },
+      '2021-09-30': { CPNG: 78.3, HOOD: 12.8, CLOV: 4.9, SE: 3.2, UPWK: 0.2, NYT: 0.2, SNOW: 0.1, Z: 0.1, SMAR: 0.1, GDRX: 0.1, GWRE: 0.0 },
+      '2021-12-31': { CPNG: 84.0, TOST: 5.8, SE: 4.2, CLOV: 2.3, UPWK: 0.7, NYT: 0.7, SMAR: 0.6, PTON: 0.4, SNOW: 0.3, IOT: 0.3, GTLB: 0.3, GDRX: 0.3, Z: 0.1, JTKWY: 0.0 },
+      '2022-03-31': { CPNG: 54.1, TOST: 10.6, CVNA: 5.8, SE: 5.6, SNOW: 4.8, SOND: 4.7, UPWK: 4.6, IOT: 4.1, NYT: 3.8, SMAR: 0.8, CZOO: 0.5, GTLB: 0.4, Z: 0.2 },
+      '2022-06-30': { CPNG: 59.0, TOST: 11.1, UPWK: 6.5, SE: 4.7, IOT: 4.4, SNOW: 4.4, CVNA: 4.1, NYT: 2.1, SOND: 1.5, SMAR: 1.0, PCOR: 0.7, CZOO: 0.2, Z: 0.2 },
+      '2022-09-30': { CPNG: 62.8, TOST: 11.8, CVNA: 5.8, IOT: 3.5, SE: 3.2, SNOW: 3.1, UPWK: 2.8, DASH: 2.3, NYT: 1.4, PCOR: 1.2, SMAR: 0.9, INTR: 0.9, SOND: 0.1, Z: 0.1, CZOO: 0.1 },
+      '2022-12-31': { TOST: 29.0, CPNG: 22.0, IOT: 7.9, SE: 6.6, DASH: 5.9, CVNA: 5.9, SNOW: 5.7, UPWK: 5.2, NYT: 3.9, PCOR: 2.9, AMZN: 2.4, SMAR: 1.7, Z: 0.3, SOND: 0.2, INTR: 0.2, CZOO: 0.1 },
+      '2023-03-31': { TOST: 25.0, CPNG: 20.8, CVNA: 10.5, SE: 9.5, DASH: 7.9, SNOW: 5.2, UPWK: 4.9, AMZN: 4.1, NYT: 4.0, IOT: 3.9, PCOR: 2.3, SMAR: 1.3, Z: 0.4, SOND: 0.1 },
+      '2023-06-30': { TOST: 26.8, CVNA: 23.1, CPNG: 18.8, DASH: 7.9, SE: 5.3, SNOW: 4.5, AMZN: 4.3, NYT: 3.4, UPWK: 2.6, PCOR: 2.0, SMAR: 0.9, Z: 0.3, SOND: 0.1 },
+      '2023-09-30': { CVNA: 31.4, CPNG: 18.8, TOST: 18.6, DASH: 6.1, AMZN: 4.3, SE: 4.1, NYT: 3.6, SNOW: 3.2, CART: 3.0, UPWK: 2.7, PCOR: 2.0, KVYO: 1.1, SMAR: 0.7, Z: 0.3, SOND: 0.1 },
+      '2023-12-31': { CVNA: 37.2, TOST: 18.8, CPNG: 16.8, AMZN: 4.9, DASH: 4.6, NYT: 4.0, SNOW: 3.9, SE: 3.6, UPWK: 2.2, CART: 2.1, PCOR: 1.5, Z: 0.4, SOND: 0.0 },
+      '2024-03-31': { CVNA: 43.6, TOST: 17.3, CPNG: 13.1, KVYO: 5.3, AMZN: 3.9, DASH: 3.8, SE: 3.4, NYT: 2.4, CART: 2.3, SNOW: 2.3, PCOR: 1.3, UPWK: 1.1, Z: 0.2, SOND: 0.0 },
+      '2024-06-30': { CVNA: 50.7, CPNG: 13.9, TOST: 13.5, KVYO: 4.2, SE: 3.6, AMZN: 3.4, DASH: 2.4, NYT: 2.3, PCOR: 1.7, CART: 1.6, SNOW: 1.5, UPWK: 0.8, Z: 0.2, SOND: 0.0 },
+      '2024-09-30': { CVNA: 54.6, CPNG: 15.3, TOST: 12.5, KVYO: 4.4, SE: 3.8, AMZN: 2.6, DASH: 2.2, PCOR: 2.1, CART: 1.3, SNOW: 1.0, NYT: 0.1, SOND: 0.0 },
+      '2024-12-31': { CVNA: 63.0, CPNG: 16.5, KVYO: 5.2, TOST: 4.2, TTAN: 4.0, AMZN: 3.1, DASH: 1.4, SNOW: 1.4, PCOR: 1.0 },
+      '2025-03-31': { CVNA: 67.9, CPNG: 16.8, TTAN: 4.2, TOST: 4.1, KVYO: 3.9, AMZN: 2.5, PCOR: 0.6 },
+      '2025-06-30': { CVNA: 71.6, CPNG: 17.3, TTAN: 3.4, KVYO: 3.0, TOST: 2.6, AMZN: 2.0, PCOR: 0.2 },
+      '2025-09-30': { CVNA: 64.8, CPNG: 16.2, FIG: 7.0, TTAN: 4.2, VEEV: 2.3, KVYO: 2.1, TOST: 1.8, AMZN: 1.7 },
+      '2025-12-31': { CVNA: 60.0, CPNG: 12.2, NAVN: 9.2, TTAN: 5.5, VEEV: 5.2, FIG: 3.9, KVYO: 2.5, TOST: 0.8, AMZN: 0.4, TBBB: 0.3 },
+    },
+  },
+  {
+    id: 'PELOSI',
+    label: 'Nancy Pelosi',
+    shortLabel: 'Pelosi',
+    source: 'STOCK Act congressional disclosures via Capitol Trades & pelositracker.app',
+    managerId: null,
+    category: 'other',
+    quarters: {
+      '2023-03-31': { AAPL: 32.0, DIS: 12.0, MSFT: 10.5, CRM: 6.5, GOOGL: 6.5, NVDA: 5.5, AMZN: 5.5, TSLA: 4.8, NFLX: 4.3, PYPL: 3.7, AB: 3.2, V: 3.2, RBLX: 1.2, CRWD: 1.1 },
+      '2023-06-30': { AAPL: 34.2, MSFT: 11.7, DIS: 11.4, CRM: 6.1, GOOGL: 6.1, NVDA: 5.3, AMZN: 5.3, TSLA: 4.4, NFLX: 4.1, PYPL: 3.5, AB: 2.9, V: 2.9, RBLX: 1.1, CRWD: 1.0 },
+      '2023-09-30': { AAPL: 34.1, MSFT: 11.7, DIS: 11.4, CRM: 6.1, GOOGL: 6.1, NVDA: 5.6, AMZN: 5.3, TSLA: 4.1, NFLX: 4.1, PYPL: 3.5, AB: 3.0, V: 3.0, RBLX: 1.0, CRWD: 1.0 },
+      '2023-12-31': { AAPL: 31.7, DIS: 10.9, MSFT: 10.9, NVDA: 8.8, CRM: 5.7, GOOGL: 5.7, AMZN: 5.2, TSLA: 3.9, NFLX: 3.9, PYPL: 3.3, CRWD: 3.3, AB: 2.9, V: 2.9, RBLX: 0.9 },
+      '2024-03-31': { AAPL: 30.8, DIS: 10.6, MSFT: 10.6, NVDA: 9.3, CRM: 5.5, GOOGL: 5.5, AMZN: 5.0, TSLA: 3.8, NFLX: 3.6, CRWD: 3.6, PYPL: 3.2, V: 2.8, AB: 2.8, PANW: 2.1, RBLX: 0.8 },
+      '2024-06-30': { AAPL: 27.7, NVDA: 13.1, DIS: 10.0, MSFT: 10.0, CRM: 5.3, GOOGL: 5.3, AMZN: 4.7, CRWD: 3.7, NFLX: 3.4, AVGO: 3.2, TSLA: 3.2, PYPL: 2.9, AB: 2.6, PANW: 2.1, V: 2.1, RBLX: 0.7 },
+      '2024-09-30': { AAPL: 25.1, NVDA: 16.6, DIS: 9.4, MSFT: 7.3, AVGO: 5.7, CRM: 5.0, GOOGL: 5.0, AMZN: 4.4, PANW: 3.6, CRWD: 3.6, NFLX: 3.3, TSLA: 3.1, PYPL: 2.9, AB: 2.5, V: 1.9, RBLX: 0.6 },
+      '2024-12-31': { NVDA: 19.3, AAPL: 12.3, DIS: 10.7, MSFT: 8.6, AVGO: 7.0, GOOGL: 5.9, CRM: 5.9, AMZN: 5.2, PANW: 4.3, CRWD: 4.3, NFLX: 3.9, TSLA: 3.6, PYPL: 3.2, AB: 2.9, V: 2.1, RBLX: 0.8 },
+      '2025-03-31': { NVDA: 17.2, DIS: 10.9, AVGO: 8.9, MSFT: 8.9, PANW: 8.3, GOOGL: 6.8, CRM: 6.0, AMZN: 6.0, CRWD: 4.7, NFLX: 4.0, TSLA: 3.8, AAPL: 3.6, PYPL: 3.1, AB: 2.9, V: 2.3, VST: 1.6, RBLX: 0.7, TEM: 0.3 },
+      '2025-06-30': { NVDA: 17.6, DIS: 11.0, AVGO: 9.4, MSFT: 8.6, PANW: 8.4, GOOGL: 6.8, AMZN: 6.1, CRM: 5.8, CRWD: 4.7, AAPL: 3.7, NFLX: 3.7, TSLA: 3.7, PYPL: 2.9, AB: 2.9, V: 2.1, VST: 1.6, RBLX: 0.7, TEM: 0.3 },
+      '2025-09-30': { NVDA: 16.6, AVGO: 13.4, DIS: 10.5, MSFT: 8.3, PANW: 8.0, GOOGL: 6.6, AMZN: 5.9, CRM: 5.6, CRWD: 4.5, NFLX: 3.7, TSLA: 3.5, AAPL: 3.2, PYPL: 2.9, AB: 2.8, V: 2.0, VST: 1.6, RBLX: 0.6, TEM: 0.3 },
+      '2025-12-31': { NVDA: 17.3, AVGO: 14.2, PANW: 8.4, MSFT: 8.4, DIS: 7.3, GOOGL: 6.8, AMZN: 6.1, CRM: 5.8, CRWD: 4.7, AAPL: 4.0, NFLX: 3.7, TSLA: 3.7, AB: 2.9, PYPL: 2.1, V: 2.1, VST: 1.6, RBLX: 0.6, TEM: 0.3 },
+    },
+  },
 ];
 
 function buildSuperinvestorMember(portfolio, priceSeries, baseDates, spyPriceByDate, modelEndDate, marketCaps = {}) {
@@ -313,6 +369,7 @@ function buildSuperinvestorMember(portfolio, priceSeries, baseDates, spyPriceByD
     label: portfolio.label,
     shortLabel: portfolio.shortLabel,
     managerId: portfolio.managerId ?? null,
+    category: portfolio.category ?? null,
     status: 'ready',
     strategyType: 'superinvestor',
     source: portfolio.source,
@@ -1334,6 +1391,14 @@ async function main() {
       message: 'Need buy dates, entry prices, and sizes before performance can be plotted against SPY.',
     }));
 
+  const otherPendingMembers = Object.entries(otherMembers).map(([id, member]) => ({
+    id,
+    label: member.label,
+    status: member.status,
+    category: 'other',
+    message: member.message,
+  }));
+
   const groupData = {
     id: 'GROUP',
     label: 'Boba Bonh Mi Bros',
@@ -1378,7 +1443,7 @@ async function main() {
       ],
     },
     dates: baseDates,
-    members: [memberData, ...externalMembers, ...pendingMembers],
+    members: [memberData, ...externalMembers, ...pendingMembers, ...otherPendingMembers],
   };
 
   // Remove duplicated dates arrays from each member's chart (saves ~4.5MB)

@@ -43,7 +43,7 @@ export default function TimeRangeSlider({ dates, startIdx, onChange }) {
 
   return (
     <div className="space-y-1">
-      <div className="flex items-center justify-between text-xs text-muted">
+      <div className="flex items-center justify-between text-xs text-muted max-sm:text-[0.7rem]">
         <span className="font-medium">Start: <span className="text-ink">{label}</span></span>
         <span>End: {endLabel}</span>
       </div>
@@ -54,7 +54,7 @@ export default function TimeRangeSlider({ dates, startIdx, onChange }) {
           max={maxStart}
           value={startIdx}
           onChange={handleChange}
-          className="slider-range w-full cursor-pointer"
+          className="slider-range w-full cursor-pointer max-sm:h-8"
           aria-label="Comparison start date"
         />
         {/* Year tick marks */}
