@@ -349,6 +349,10 @@ function buildSuperinvestorMember(portfolio, priceSeries, baseDates, spyPriceByD
   const holdingsSource = useFullHoldings
     ? Object.fromEntries(portfolio.holdings.map(h => [h.ticker, h.weightPct]))
     : latestRaw;
+  // Build a lookup for reportedPrice from scraped holdings
+  const reportedPriceLookup = useFullHoldings
+    ? Object.fromEntries(portfolio.holdings.map(h => [h.ticker, h.reportedPrice ?? null]))
+    : {};
   const currentHoldings = Object.entries(holdingsSource)
     .map(([ticker, pct]) => ({
       ticker,
@@ -361,6 +365,7 @@ function buildSuperinvestorMember(portfolio, priceSeries, baseDates, spyPriceByD
         return first && last ? (last / first) - 1 : null;
       })(),
       marketCap: marketCaps[ticker] ?? null,
+      reportedPrice: reportedPriceLookup[ticker] ?? null,
     }))
     .sort((a, b) => b.weight - a.weight);
 

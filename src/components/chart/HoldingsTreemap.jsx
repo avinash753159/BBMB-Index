@@ -146,7 +146,8 @@ export default function HoldingsTreemap({ allSeries, seriesById, capMax = 5e12 }
       } else if (s.kind === 'superinvestor') {
         managerId = s.managerId ?? null;
         holdings = (s.holdings ?? []).map((h) => ({
-          ticker: h.ticker, weight: h.weight ?? 0, marketCap: h.marketCap ?? null, returnPct: h.returnPct ?? null,
+          ticker: h.ticker, weight: h.weight ?? 0, marketCap: h.marketCap ?? null,
+          returnPct: h.returnPct ?? null, reportedPrice: h.reportedPrice ?? null,
         }));
       } else if (s.kind === 'portfolio' || s.kind === 'composite') {
         const positions = s.trackedOpenPositions ?? s.payload?.trackedOpenPositions ?? [];
@@ -179,6 +180,7 @@ export default function HoldingsTreemap({ allSeries, seriesById, capMax = 5e12 }
             rawWeight: h.weight,
             marketCap: h.marketCap,
             returnPct: h.returnPct,
+            reportedPrice: h.reportedPrice,
           })),
       });
     }
@@ -346,9 +348,17 @@ export default function HoldingsTreemap({ allSeries, seriesById, capMax = 5e12 }
                             className="select-none pointer-events-none"
                           >{(d.rawWeight * 100).toFixed(1)}%</text>
                         )}
-                        {h >= 58 && d.rawWeight != null && (
+                        {h >= 58 && d.reportedPrice != null && (
                           <text x={leaf.x0 + 6} y={leaf.y0 + 44}
                             fill="rgba(255,255,255,0.5)"
+                            fontSize={w > 80 ? 10 : 9} fontWeight={500}
+                            fontFamily="var(--font-geist-mono), monospace"
+                            className="select-none pointer-events-none"
+                          >${d.reportedPrice.toLocaleString()}</text>
+                        )}
+                        {h >= 58 && d.reportedPrice == null && d.rawWeight != null && (
+                          <text x={leaf.x0 + 6} y={leaf.y0 + 44}
+                            fill="rgba(255,255,255,0.4)"
                             fontSize={w > 80 ? 10 : 9} fontWeight={500}
                             fontFamily="var(--font-geist-mono), monospace"
                             className="select-none pointer-events-none"
@@ -398,9 +408,9 @@ export default function HoldingsTreemap({ allSeries, seriesById, capMax = 5e12 }
                     {d.rawWeight != null && <span>Weight: {(d.rawWeight * 100).toFixed(1)}%</span>}
                     {d.marketCap != null && <span>Cap: {formatMarketCap(d.marketCap)}</span>}
                   </div>
-                  {d.returnPct != null && (
-                    <div className="mt-0.5 font-mono text-xs font-semibold" style={{ color: d.returnPct >= 0 ? '#7f7' : '#f77' }}>
-                      {formatPercent(d.returnPct)} return
+                  {d.reportedPrice != null && (
+                    <div className="mt-0.5 font-mono text-xs text-muted">
+                      Reported: ${d.reportedPrice.toLocaleString()}
                     </div>
                   )}
                   {d.stockUrl && (
