@@ -346,13 +346,13 @@ export default function HoldingsTreemap({ allSeries, seriesById, capMax = 5e12 }
                             className="select-none pointer-events-none"
                           >{(d.rawWeight * 100).toFixed(1)}%</text>
                         )}
-                        {h >= 58 && d.returnPct != null && (
+                        {h >= 58 && d.rawWeight != null && (
                           <text x={leaf.x0 + 6} y={leaf.y0 + 44}
-                            fill={d.returnPct >= 0 ? 'rgba(120,255,120,0.85)' : 'rgba(255,120,120,0.85)'}
-                            fontSize={w > 80 ? 11 : 10} fontWeight={600}
+                            fill="rgba(255,255,255,0.5)"
+                            fontSize={w > 80 ? 10 : 9} fontWeight={500}
                             fontFamily="var(--font-geist-mono), monospace"
                             className="select-none pointer-events-none"
-                          >{formatPercent(d.returnPct)}</text>
+                          >{(d.rawWeight * 100).toFixed(1)}%</text>
                         )}
                       </>
                     )}
