@@ -43,9 +43,23 @@ export default function App() {
   // Initialize state once model loads
   useEffect(() => {
     if (model && !initialized) {
+      // Verify key series exist
+      const required = ['AVI', 'SPY'];
+      for (const id of required) {
+        if (!model.seriesById[id]) {
+          console.warn(`[BBMB] Missing required series: ${id}`);
+        } else {
+          const s = model.seriesById[id];
+          const hasData = s.returnPctSeries?.some((v) => v != null);
+          if (!hasData) console.warn(`[BBMB] Series ${id} has no data points`);
+        }
+      }
+      // Log available series for diagnostics
+      console.log(`[BBMB] Loaded ${model.comparisonSeries.length} series, ${model.views.length} views, ${model.dates.length} dates`);
+
       const firstView = model.views.some((v) => v.id === 'AVI') ? 'AVI' : model.views[0]?.id ?? 'AVI';
       setActiveView(firstView);
-      setSelectedSeriesIds(sanitizeSelection(['SPY', 'LI_LU', 'BUFFETT'], model));
+      setSelectedSeriesIds(sanitizeSelection(['AVI', 'SPY', 'LI_LU', 'BUFFETT'], model));
       // Default to ~5 years back from end
       const fiveYearsBack = model.dates.length > 0
         ? model.dates.findIndex((d) => d >= '2021-03-05')
@@ -142,8 +156,8 @@ export default function App() {
         const trimmed = s.returnPctSeries.slice(startIdx);
         const baseIdx = trimmed.findIndex((v) => v != null);
         if (baseIdx === -1) return null; // no data in this window — hide the series
-        // Drop non-benchmark series that don't start near the window start (>5 trading days gap)
-        if (s.kind !== 'benchmark' && baseIdx > 5) return null;
+        // Drop non-benchmark series that don't have data at the window start
+        if (s.kind !== 'benchmark' && baseIdx > 2) return null;
         const baseVal = 1 + trimmed[baseIdx];
         const renormalized = trimmed.map((v) => v == null ? null : ((1 + v) / baseVal) - 1);
         const totalReturnPct = latestNonNull(renormalized);
