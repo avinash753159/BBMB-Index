@@ -113,15 +113,14 @@ function HoldingsCard({ id, label, holdings, sourceUrl, sourceName, capMax }) {
       ) : (
         <div className="space-y-1.5">
           {filtered.slice(0, 10).map((h) => {
-            const Row = sourceUrl ? 'a' : 'div';
-            const rowProps = sourceUrl
-              ? { href: sourceUrl, target: '_blank', rel: 'noopener noreferrer' }
-              : {};
+            const stockUrl = `https://www.dataroma.com/m/stock.php?sym=${h.ticker}`;
+            const Row = 'a';
+            const rowProps = { href: stockUrl, target: '_blank', rel: 'noopener noreferrer' };
             return (
               <Row
                 key={h.ticker}
                 {...rowProps}
-                className={`flex items-center justify-between text-xs ${sourceUrl ? 'rounded-md px-1 py-0.5 -mx-1 transition-colors hover:bg-ink/5 cursor-pointer' : ''}`}
+                className="flex items-center justify-between text-xs rounded-md px-1 py-0.5 -mx-1 transition-colors hover:bg-ink/5 cursor-pointer"
               >
                 <div className="flex items-center gap-1.5">
                   <TickerLogo ticker={h.ticker} size={16} />

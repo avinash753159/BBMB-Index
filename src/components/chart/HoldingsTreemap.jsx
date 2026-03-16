@@ -49,7 +49,7 @@ function getInvestorUrl(investorId, managerId) {
 }
 
 function returnColor(returnPct) {
-  if (returnPct == null) return 'rgba(255,255,255,0.08)';
+  if (returnPct == null) return 'rgb(55, 65, 75)';
   const t = Math.max(-1, Math.min(5, returnPct));
   if (t >= 0) {
     const intensity = Math.min(t / 2, 1);
@@ -61,7 +61,7 @@ function returnColor(returnPct) {
 }
 
 function returnBorderColor(returnPct) {
-  if (returnPct == null) return 'rgba(255,255,255,0.12)';
+  if (returnPct == null) return 'rgba(120, 130, 140, 0.4)';
   const t = Math.max(-1, Math.min(5, returnPct));
   if (t >= 0) {
     const intensity = Math.min(t / 2, 1);
@@ -174,7 +174,7 @@ export default function HoldingsTreemap({ allSeries, seriesById, capMax = 5e12 }
             name: h.ticker,
             investorId: s.id,
             investorLabel: s.shortLabel ?? s.label,
-            investorUrl: url,
+            stockUrl: `https://www.dataroma.com/m/stock.php?sym=${h.ticker}`,
             weight: totalWeight > 0 ? h.weight / totalWeight : 1 / holdings.length,
             rawWeight: h.weight,
             marketCap: h.marketCap,
@@ -311,7 +311,7 @@ export default function HoldingsTreemap({ allSeries, seriesById, capMax = 5e12 }
                 const isHovered = hovered === `${d.investorId}-${d.name}`;
                 const bg = returnColor(d.returnPct);
                 const border = returnBorderColor(d.returnPct);
-                const hasLink = !!d.investorUrl;
+                const hasLink = !!d.stockUrl;
 
                 const tileContent = (
                   <g
@@ -367,7 +367,7 @@ export default function HoldingsTreemap({ allSeries, seriesById, capMax = 5e12 }
                 );
 
                 return hasLink ? (
-                  <a key={`${d.investorId}-${d.name}`} href={d.investorUrl} target="_blank" rel="noopener noreferrer">
+                  <a key={`${d.investorId}-${d.name}`} href={d.stockUrl} target="_blank" rel="noopener noreferrer">
                     {tileContent}
                   </a>
                 ) : (
@@ -403,7 +403,7 @@ export default function HoldingsTreemap({ allSeries, seriesById, capMax = 5e12 }
                       {formatPercent(d.returnPct)} return
                     </div>
                   )}
-                  {d.investorUrl && (
+                  {d.stockUrl && (
                     <div className="mt-1 text-[0.6rem] text-blue-400">Click to view source</div>
                   )}
                 </div>
