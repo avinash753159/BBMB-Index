@@ -11,7 +11,7 @@ export default function DetailRouter({ view, model, onSetSeries, capMax }) {
   const inner = (() => {
     switch (view.kind) {
       case 'portfolio':
-        return null;
+        return <AviDetail view={view} />;
       case 'composite':
         return <PabraiDetail view={view} model={model} onSetSeries={onSetSeries} />;
       case 'fund':

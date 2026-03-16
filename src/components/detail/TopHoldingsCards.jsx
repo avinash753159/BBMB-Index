@@ -112,20 +112,30 @@ function HoldingsCard({ id, label, holdings, sourceUrl, sourceName, capMax }) {
         </p>
       ) : (
         <div className="space-y-1.5">
-          {filtered.slice(0, 10).map((h) => (
-            <div key={h.ticker} className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1.5">
-                <TickerLogo ticker={h.ticker} size={16} />
-                <span className="font-mono font-medium">{h.ticker}</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted">
-                <span>{formatCap(h.marketCap)}</span>
-                <span className="w-12 text-right font-mono">
-                  {h.weight != null ? `${h.weight.toFixed(1)}%` : '—'}
-                </span>
-              </div>
-            </div>
-          ))}
+          {filtered.slice(0, 10).map((h) => {
+            const Row = sourceUrl ? 'a' : 'div';
+            const rowProps = sourceUrl
+              ? { href: sourceUrl, target: '_blank', rel: 'noopener noreferrer' }
+              : {};
+            return (
+              <Row
+                key={h.ticker}
+                {...rowProps}
+                className={`flex items-center justify-between text-xs ${sourceUrl ? 'rounded-md px-1 py-0.5 -mx-1 transition-colors hover:bg-ink/5 cursor-pointer' : ''}`}
+              >
+                <div className="flex items-center gap-1.5">
+                  <TickerLogo ticker={h.ticker} size={16} />
+                  <span className="font-mono font-medium">{h.ticker}</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted">
+                  <span>{formatCap(h.marketCap)}</span>
+                  <span className="w-12 text-right font-mono">
+                    {h.weight != null ? `${h.weight.toFixed(1)}%` : '—'}
+                  </span>
+                </div>
+              </Row>
+            );
+          })}
         </div>
       )}
       {sourceUrl && (

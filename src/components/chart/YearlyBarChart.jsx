@@ -55,6 +55,7 @@ export default function YearlyBarChart({ selectedSeries, dates, onActivateView }
     selectedSeries.some((s) => s.id === t.id)
   );
   const [activeToggleId, setActiveToggleId] = useState(null);
+  const [expanded, setExpanded] = useState(false);
 
   const filteredSeries = useMemo(() => {
     if (!activeToggleId) {
@@ -104,8 +105,6 @@ export default function YearlyBarChart({ selectedSeries, dates, onActivateView }
   function yForValue(v) {
     return zeroY - (v / maxAbs) * (barAreaHeight / 2);
   }
-
-  const [expanded, setExpanded] = useState(false);
 
   return (
     <GlassCard className="p-6">

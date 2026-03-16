@@ -13,6 +13,7 @@ const YearlyBarChart = lazy(() => import('./components/chart/YearlyBarChart'));
 const DetailRouter = lazy(() => import('./components/detail/DetailRouter'));
 const FilteredHoldingsTable = lazy(() => import('./components/detail/FilteredHoldingsTable'));
 const TopHoldingsCards = lazy(() => import('./components/detail/TopHoldingsCards'));
+const HoldingsTreemap = lazy(() => import('./components/chart/HoldingsTreemap'));
 
 const MAX_DISPLAY = 5;
 
@@ -141,6 +142,8 @@ export default function App() {
         const trimmed = s.returnPctSeries.slice(startIdx);
         const baseIdx = trimmed.findIndex((v) => v != null);
         if (baseIdx === -1) return null; // no data in this window — hide the series
+        // Drop non-benchmark series that don't start near the window start (>5 trading days gap)
+        if (s.kind !== 'benchmark' && baseIdx > 5) return null;
         const baseVal = 1 + trimmed[baseIdx];
         const renormalized = trimmed.map((v) => v == null ? null : ((1 + v) / baseVal) - 1);
         const totalReturnPct = latestNonNull(renormalized);
@@ -258,6 +261,7 @@ export default function App() {
           />
           <MarketCapSlider capMax={capMax} onChange={setCapMax} />
           <TopHoldingsCards displaySeries={displaySeries} seriesById={model.seriesById} capMax={capMax} />
+          <HoldingsTreemap allSeries={allToggleSeries} seriesById={model.seriesById} capMax={capMax} />
           <YearlyBarChart
             selectedSeries={displaySeries}
             dates={windowedDates}

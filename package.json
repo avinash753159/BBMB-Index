@@ -17,6 +17,7 @@
     "@fontsource/geist-mono": "^5.2.7",
     "@fontsource/geist-sans": "^5.2.5",
     "d3-array": "^3.2.4",
+    "d3-hierarchy": "^3.1.2",
     "d3-scale": "^4.0.2",
     "d3-shape": "^3.2.0",
     "react": "^19.2.4",
