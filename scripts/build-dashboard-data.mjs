@@ -349,24 +349,29 @@ function buildSuperinvestorMember(portfolio, priceSeries, baseDates, spyPriceByD
   const holdingsSource = useFullHoldings
     ? Object.fromEntries(portfolio.holdings.map(h => [h.ticker, h.weightPct]))
     : latestRaw;
-  // Build a lookup for reportedPrice from scraped holdings
-  const reportedPriceLookup = useFullHoldings
-    ? Object.fromEntries(portfolio.holdings.map(h => [h.ticker, h.reportedPrice ?? null]))
+  // Build lookups for scraped holdings data
+  const scrapedLookup = useFullHoldings
+    ? Object.fromEntries(portfolio.holdings.map(h => [h.ticker, h]))
     : {};
   const currentHoldings = Object.entries(holdingsSource)
-    .map(([ticker, pct]) => ({
-      ticker,
-      weight: pct / 100,
-      returnPct: (() => {
-        const aligned = priceSeries[ticker]?.aligned;
-        if (!aligned) return null;
-        const first = aligned.find((v) => v != null);
-        const last = latestNonNull(aligned);
-        return first && last ? (last / first) - 1 : null;
-      })(),
-      marketCap: marketCaps[ticker] ?? null,
-      reportedPrice: reportedPriceLookup[ticker] ?? null,
-    }))
+    .map(([ticker, pct]) => {
+      const scraped = scrapedLookup[ticker] ?? {};
+      return {
+        ticker,
+        weight: pct / 100,
+        returnPct: (() => {
+          const aligned = priceSeries[ticker]?.aligned;
+          if (!aligned) return null;
+          const first = aligned.find((v) => v != null);
+          const last = latestNonNull(aligned);
+          return first && last ? (last / first) - 1 : null;
+        })(),
+        marketCap: marketCaps[ticker] ?? null,
+        reportedPrice: scraped.reportedPrice ?? null,
+        currentPrice: scraped.currentPrice ?? null,
+        pctChangeFromReported: scraped.pctChangeFromReported ?? null,
+      };
+    })
     .sort((a, b) => b.weight - a.weight);
 
   return {

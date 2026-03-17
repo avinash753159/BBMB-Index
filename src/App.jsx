@@ -14,6 +14,7 @@ const DetailRouter = lazy(() => import('./components/detail/DetailRouter'));
 const FilteredHoldingsTable = lazy(() => import('./components/detail/FilteredHoldingsTable'));
 const TopHoldingsCards = lazy(() => import('./components/detail/TopHoldingsCards'));
 const HoldingsTreemap = lazy(() => import('./components/chart/HoldingsTreemap'));
+const ReportedPriceFilter = lazy(() => import('./components/detail/ReportedPriceFilter'));
 
 const MAX_DISPLAY = 5;
 
@@ -292,6 +293,7 @@ export default function App() {
           {activeViewObj && selectedSeriesIds.includes(activeViewObj.id) && (
             <DetailRouter view={activeViewObj} model={model} onSetSeries={handleSetSeries} capMax={capMax} />
           )}
+          <ReportedPriceFilter seriesById={model.seriesById} />
         </Suspense>
       </main>
     </PageShell>

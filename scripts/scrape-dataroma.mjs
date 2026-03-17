@@ -126,13 +126,18 @@ export async function fetchHoldings(managerId) {
     // cells[2] = shares (e.g. "227,917,808")
     // cells[3] = reported price (e.g. "$271.86")
     // cells[4] = value (e.g. "$61,961,735,000")
+    // cells[0] = weight%, cells[1] = activity, cells[2] = shares,
+    // cells[3] = reported price, cells[4] = value,
+    // cells[5] = gap (empty), cells[6] = current price, cells[7] = +/- reported price
     const weightPct = parseFloat(cells[0]) || 0;
     const shares = parseInt((cells[2] || '').replace(/,/g, ''), 10) || 0;
     const reportedPrice = parseFloat((cells[3] || '').replace(/[$,]/g, '')) || 0;
     const value = parseFloat((cells[4] || '').replace(/[$,]/g, '')) || 0;
+    const currentPrice = parseFloat((cells[6] || '').replace(/[$,]/g, '')) || null;
+    const pctChangeFromReported = parseFloat((cells[7] || '').replace(/[%,]/g, '')) || null;
 
     if (ticker && weightPct > 0) {
-      holdings.push({ ticker, company, weightPct, shares, reportedPrice, value });
+      holdings.push({ ticker, company, weightPct, shares, reportedPrice, value, currentPrice, pctChangeFromReported });
     }
   }
 
