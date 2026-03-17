@@ -11,10 +11,11 @@ function formatPct(v) {
 
 export default function ReportedPriceFilter({ seriesById }) {
   const [threshold, setThreshold] = useState(-20);
+  const [minInvestors, setMinInvestors] = useState(1);
 
   // Aggregate all superinvestor holdings that have pctChangeFromReported
   const allHoldings = useMemo(() => {
-    const map = new Map(); // ticker -> { ticker, pctChange, investors, marketCap, reportedPrice, currentPrice }
+    const map = new Map();
 
     for (const s of Object.values(seriesById)) {
       if (s.kind !== 'superinvestor' || !s.holdings) continue;
@@ -38,16 +39,24 @@ export default function ReportedPriceFilter({ seriesById }) {
     return [...map.values()].sort((a, b) => a.pctChange - b.pctChange);
   }, [seriesById]);
 
-  // Filter by threshold
+  const maxInvestorCount = useMemo(() => {
+    if (!allHoldings.length) return 1;
+    return Math.max(...allHoldings.map((h) => h.investors.length));
+  }, [allHoldings]);
+
+  // Filter by threshold AND min investors
   const filtered = useMemo(() => {
+    let result;
     if (threshold < 0) {
-      // Show stocks that dropped MORE than threshold (e.g. threshold=-20 → show stocks at -20% or worse)
-      return allHoldings.filter((h) => h.pctChange <= threshold);
+      result = allHoldings.filter((h) => h.pctChange <= threshold);
     } else {
-      // Show stocks that gained MORE than threshold (e.g. threshold=+20 → show stocks at +20% or better)
-      return allHoldings.filter((h) => h.pctChange >= threshold);
+      result = allHoldings.filter((h) => h.pctChange >= threshold);
     }
-  }, [allHoldings, threshold]);
+    if (minInvestors > 1) {
+      result = result.filter((h) => h.investors.length >= minInvestors);
+    }
+    return result;
+  }, [allHoldings, threshold, minInvestors]);
 
   if (!allHoldings.length) return null;
 
@@ -59,23 +68,27 @@ export default function ReportedPriceFilter({ seriesById }) {
       <Eyebrow>+/- Reported Price Filter</Eyebrow>
       <GlassCard className="p-6">
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-muted">
-              Stocks across all superinvestors where price has moved{' '}
-              <span className="font-semibold text-ink">
-                {threshold < 0 ? `${threshold}% or more below` : `+${threshold}% or more above`}
-              </span>{' '}
-              their 13F reported price
-            </p>
-            <span className={`rounded-full px-3 py-1 text-sm font-mono font-semibold ${
-              threshold < 0 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-700'
-            }`}>
-              {formatPct(threshold)}
-            </span>
-          </div>
+          <p className="text-sm text-muted">
+            Stocks across all superinvestors where price has moved{' '}
+            <span className="font-semibold text-ink">
+              {threshold < 0 ? `${threshold}% or more below` : `+${threshold}% or more above`}
+            </span>{' '}
+            their 13F reported price
+            {minInvestors > 1 && (
+              <>, held by <span className="font-semibold text-ink">{minInvestors}+ investors</span></>
+            )}
+          </p>
 
-          {/* Slider */}
+          {/* +/- Reported Price slider */}
           <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted">+/- Reported Price</span>
+              <span className={`rounded-full px-3 py-0.5 text-sm font-mono font-semibold ${
+                threshold < 0 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-700'
+              }`}>
+                {formatPct(threshold)}
+              </span>
+            </div>
             <input
               type="range"
               min={minPct}
@@ -89,6 +102,29 @@ export default function ReportedPriceFilter({ seriesById }) {
               <span>{formatPct(minPct)}</span>
               <span>0%</span>
               <span>{formatPct(maxPct)}</span>
+            </div>
+          </div>
+
+          {/* # of Investors slider */}
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted"># of Investors</span>
+              <span className="rounded-full bg-ink/5 px-3 py-0.5 text-sm font-mono font-semibold text-ink">
+                {minInvestors === 1 ? 'Any' : `${minInvestors}+`}
+              </span>
+            </div>
+            <input
+              type="range"
+              min={1}
+              max={Math.max(maxInvestorCount, 2)}
+              step={1}
+              value={minInvestors}
+              onChange={(e) => setMinInvestors(Number(e.target.value))}
+              className="w-full accent-ink cursor-pointer"
+            />
+            <div className="flex justify-between text-[0.6rem] text-muted font-mono">
+              <span>1</span>
+              <span>{Math.max(maxInvestorCount, 2)}</span>
             </div>
           </div>
 
@@ -133,7 +169,7 @@ export default function ReportedPriceFilter({ seriesById }) {
             </div>
           ) : (
             <p className="py-6 text-center text-sm text-muted">
-              No stocks match this threshold. Try adjusting the slider.
+              No stocks match these filters. Try adjusting the sliders.
             </p>
           )}
         </div>
